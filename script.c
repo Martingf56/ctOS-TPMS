@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
+
 #define BUFFER_SIZE 1
 
 #define READ_END 0
@@ -17,15 +18,9 @@ void init_signalBuff(char *signal_buff) {
     strcpy(signal_buff,"");
 }
 
-//rtl_433 -C si -R 59 -R 60 -R 82 -R 88 -R 89 -R 90 -R 95 -R 110 -R 120 -R 123 -p
-int main(int argc, char *argv[]){
+void run(char *offset) {
     int pid, fd_pipe[2];
     char buff[BUFFER_SIZE], *signal_buff;
-
-    /*if(argc != 3){
-        fprintf(stderr, "Numero de parametros incorrecto");
-        exit(EXIT_FAILURE);
-    }*/
 
     if(pipe(fd_pipe)) {
         perror("Pipe failed");
@@ -67,5 +62,17 @@ int main(int argc, char *argv[]){
     }
     else{
         perror("fork creation failed\n");
-    }
+    }    
+}
+
+//rtl_433 -C si -R 59 -R 60 -R 82 -R 88 -R 89 -R 90 -R 95 -R 110 -R 120 -R 123 -p
+int main(int argc, char *argv[]){
+
+    /*if(argc != 3){
+        fprintf(stderr, "Numero de parametros incorrecto");
+        exit(EXIT_FAILURE);
+    }*/
+
+    run(argv[1]);
+
 }
