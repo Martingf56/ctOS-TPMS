@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include "tpms_structs.h"
+
 #define BUFFER_SIZE 1
 
 #define READ_END 0
@@ -45,7 +47,7 @@ void run(char *offset) {
 
                 if(buff[0] == '\n') {
                     //Parsear string
-
+                    struct tpms_general str = generalParser(signal_buff);
                     //Mostrar dinamicamente
                     printf("%s", signal_buff);
                     free(signal_buff);
@@ -73,4 +75,6 @@ int main(int argc, char *argv[]){
 
     run(argv[1]);
 
+
 }
+
