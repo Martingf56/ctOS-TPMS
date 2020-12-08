@@ -4,6 +4,8 @@
 #include <stdbool.h>
 
 
+#define KEY_VALUE_SIZE 25
+
 /*{
     "time" : "2020-12-04 13:09:17",
     "model" : "Toyota",
@@ -44,35 +46,35 @@ struct tpms_general {
     int maybe_battery;
 };
 
-struct tpms_general assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct) {
+void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct) {
 
-    if(!strcmp(key, "model")) {
+    if(!strncmp(key, "model", strlen("model"))) {
         signalStruct->model = (char*)malloc(strlen(value));
         strcpy(signalStruct->model, value);
     }
-    else if(!strcmp(key, "time")) {
+    else if(!strncmp(key, "time", strlen("time"))) {
         signalStruct->time = (char*)malloc(strlen(value));
         strcpy(signalStruct->time, value);
     }
-    else if(!strcmp(key, "state")) {
+    else if(!strncmp(key, "state", strlen("state"))) {
         signalStruct->state = (char*)malloc(strlen(value));
         strcpy(signalStruct->state, value);
     }
-    else if(!strcmp(key, "id")) {
+    else if(!strncmp(key, "id", strlen("id"))) {
         signalStruct->id = (char*)malloc(strlen(value));
         strcpy(signalStruct->id, value);
     }
-    else if(!strcmp(key, "status")) 
+    else if(!strncmp(key, "status", strlen("status"))) 
         signalStruct->status = atoi(value);
-    else if(!strcmp(key, "flags")) 
+    else if(!strncmp(key, "flags", strlen("flags"))) 
         signalStruct->flags = atoi(value);
-    else if(!strcmp(key, "repeat")) 
+    else if(!strncmp(key, "repeat", strlen("repeat"))) 
         signalStruct->repeat = atoi(value);
-    else if(!strcmp(key, "pressure_kPa")) 
+    else if(!strncmp(key, "pressure_kPa", strlen("pressure_kPa"))) 
         signalStruct->pressure_KPA = atof(value);
-    else if(!strcmp(key, "temperature_C")) 
+    else if(!strncmp(key, "temperature_C", strlen("temperature_C"))) 
         signalStruct->temperature_C = atof(value);
-    else if(!strcmp(key, "maybe_battery")) 
+    else if(!strncmp(key, "maybe_battery", strlen("maybe_battery"))) 
         signalStruct->maybe_battery = atoi(value);
 
 }
@@ -86,7 +88,7 @@ void parserElement(char *element, char *key, char *value) {
     while(i < strlen(element) && element[i] != ':') {
         if(element[i] == '"') 
             open_quotes = !open_quotes;
-        else  if(open_quotes )
+        else  if(open_quotes)
             key[cont_key++] = element[i];
         
         i++;
@@ -117,7 +119,7 @@ struct tpms_general generalParser(char *signal) {
     strcpy(signal_aux, signal);
     element = strtok(signal_aux, ",");
     while (element != NULL) {
-        key = (char*)malloc(25); value = (char*)malloc(25);
+        key = (char*)malloc(KEY_VALUE_SIZE); value = (char*)malloc(KEY_VALUE_SIZE);
         parserElement(element, key, value);
         assignValueStruct(key, value, &signalStruct);
         element = strtok(NULL, ",");

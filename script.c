@@ -49,7 +49,7 @@ void run(char *offset) {
                     //Parsear string
                     struct tpms_general str = generalParser(signal_buff);
                     //Mostrar dinamicamente
-                    printf("%s", signal_buff);
+                    printf("%d", str.status);
                     free(signal_buff);
                     signal_buff = malloc(1000);
                     strcpy(signal_buff, "");
@@ -75,6 +75,8 @@ int main(int argc, char *argv[]){
 
     run(argv[1]);
 
+    
 }
-// struct tpms_general str = generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5a\",\"status\" : 131,\"pressure_kPa\" : 253.382,\"temperature_C\" : 14.000,\"mic\" : \"CRC\"}");
+//struct tpms_general str = generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5a\",\"status\" : 131,\"pressure_kPa\" : 253.382,\"temperature_C\" : 14.000,\"mic\" : \"CRC\"}");
+
 
