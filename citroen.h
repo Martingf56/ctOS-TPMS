@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "converter.h"
+#include "manchester_encoder.h"
 
 #define PRESSURE_CONST 1.364 /*Constante por la que dividimos la presion*/
 
@@ -10,7 +11,7 @@
 void citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, float temperature, int battery/*, char *filename*/){
 
     /*Preambulo: parte inicial de trama, indica el inicio de la comunicacion*/
-    char* preambulo = "01010101010101010101010101010110";
+    char* preamble = "01010101010101010101010101010110";
 
     /*finaltrail: parte final de trama, indica el final de la comunicacion*/
     char* finaltrail = "01111110";
@@ -56,20 +57,24 @@ void citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, f
     }  
 
     /*Construccion de la trama final que deberemos modular*/
-    char* trama = (char*)malloc(80);  
-    strcpy(trama, frame);
-    printf("%s %s\n", "Trama", trama);
-    strcat(trama, checksum);
+    char* full_frame = (char*)malloc(80);  
+    strcpy(full_frame, frame);
+    
+    strcat(full_frame, checksum);
+    printf("%s %s\n", "Trama", full_frame);
 
     /*Codificacion de la señal en manchester*/
+    char* manchester_frame = manchester_encoder(full_frame);
+    printf("%s %s\n", "Trama Manchester", manchester_frame);
 
     /*Construccion de la trama codificada. El preambulo y el fin de la trama no se codifican*/
     char* finalCodifiedFrame = (char*)malloc(120);/*duda con el tamaño del preambulo*/
-    strcpy(finalCodifiedFrame, preambulo);
-    strcat(finalCodifiedFrame, trama);
+    strcpy(finalCodifiedFrame, preamble);
+    strcat(finalCodifiedFrame, manchester_frame);
     strcat(finalCodifiedFrame, finaltrail);
 
     /*Escritura o devolucion de la señal*/
     printf("%s\n%s\n", "Trama final",finalCodifiedFrame);
+    printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));
 
 }
