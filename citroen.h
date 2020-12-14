@@ -1,7 +1,13 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifndef CONVERTER_H
+#define CONVERTER_H
+
 #include "converter.h"
+
+#endif
+
 #include "manchester_encoder.h"
 
 #define PRESSURE_CONST 1.364 /*Constante por la que dividimos la presion*/

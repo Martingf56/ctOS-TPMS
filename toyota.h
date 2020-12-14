@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifndef CONVERTER_H
+#define CONVERTER_H
+
 #include "converter.h"
+
+#endif
+
 #include "differential_manchester_encoder.h"
 
 #define PRESSURE_CONSTANT 4
