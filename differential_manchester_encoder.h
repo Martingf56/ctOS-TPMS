@@ -19,7 +19,7 @@ char* differential_manchester_encoder(char* frame){
     }
 
     for(i = 1; i < strlen(frame); i++){
-        if(frame[i] == '1'){/*si es 1, hay transición de alto-bajo o bajo-alto*/
+        if(frame[i] == '1'){/*si es 1, hay transición de alto-bajo o bajo-alto solo en mitad del intervalo, al principio no*/
             if(pattern == "01"){
                 strcat(differential_manchester_frame, "10");
                 pattern = "10";
@@ -29,7 +29,7 @@ char* differential_manchester_encoder(char* frame){
                 pattern = "01";
             }
         }
-        else{/*si es 0, mantenemos el nivel anterior*/
+        else{/*si es 0, hay transicion en mitad del intervalo y tambien al principio*/
             strcat(differential_manchester_frame, pattern);
         }
     }

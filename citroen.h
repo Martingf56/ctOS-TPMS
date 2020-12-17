@@ -81,6 +81,6 @@ void citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, f
 
     /*Escritura o devolucion de la señal*/
     printf("%s\n%s\n", "Trama final",finalCodifiedFrame);
-    printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));
+    printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
 
 }
