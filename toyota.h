@@ -9,6 +9,7 @@
 #endif
 
 #include "differential_manchester_encoder.h"
+#include "crc.h"
 
 #define PRESSURE_CONSTANT 4
 #define PRESSURE_OFFSET 7
@@ -41,9 +42,17 @@ void toyotaTPMS(char *status, char *id, float pressure, float temperature) {
     strcat(frame, lastSevenStatusBits);
     strcat(frame, invertedPressure);
 
-    //crc step
 
-    char *packetFormat;// = frame crc
+    //crc step
+    uint8_t *crcFrame = (uint8_t *)malloc(strlen(frame));
+    for(int i = 0; i < strlen(frame); i++) { /*Convert the string to a uint8 array*/
+        crcFrame[i] = frame[i] - '0';
+    }
+    uint8_t crc = crc8(crcFrame, 8, 0x07, 0x08);//Calculate crc of the frame
+
+    char *packetFormat = (char *)malloc(64+8);//Concatenate the frame with crc fo encode
+    strcpy(packetFormat, frame);
+    strcat(packetFormat, dec2bin(crc, 8));
 
     char *frameToModulate = differential_manchester_encoder(packetFormat);
 
