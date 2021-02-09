@@ -1,5 +1,7 @@
-#include "crc.h"
+#include "includes/crc.h"
 
+//Crc8 algorithm developed by github user merbanan creator of the rtl_433 program 
+//https://github.com/merbanan/rtl_433/blob/master/src/util.c -> Line of 137
 uint8_t crc8(uint8_t const message[], unsigned nBytes, uint8_t polynomial, uint8_t init) {
     uint8_t remainder = init;
     unsigned byte, bit;
