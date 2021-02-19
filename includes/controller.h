@@ -1,0 +1,50 @@
+#include <time.h>
+#include <stdbool.h>
+#include <string.h>
+
+
+#ifndef TPMS_STRUCT
+#define TPMS_STRUCT
+#include "tpms_structs.h"
+#endif
+
+#define MAX_SIGNALS 20
+#define MAX_TIME 6 //Max time for use a tpms signal
+#define BUFFER_SIZE 1 //For read rtl
+#define PIPE 2 //PIPE
+#define READ_END 0  //PIPE
+#define WRITE_END 1 //PIPE
+
+
+struct tpmsElement {
+   struct tpms_general signal;//Contiene informacion
+   clock_t time; //Para saber cuanto lleva
+};
+
+struct listOfSignals {
+    struct tpmsElement tpmsSignals[MAX_SIGNALS]; //El array que se mostrará en la lista
+    int start;
+    int end;
+};
+
+void newlistOfSignals();
+
+void startGUI();
+
+void sniperModeAttack(char *id, char *nameCar, char *temperature, char *pressure);
+
+void enableSniperMode();
+void disableSniperMode() ;
+void enableDisasterMode();
+void disableDisasterMode();
+
+void refreshView();
+
+struct tpmsElement newTpmsElement(struct tpms_general str);
+
+int addSignal(const struct tpms_general signal);
+
+int launchRTL433();
+
+void runController();
+

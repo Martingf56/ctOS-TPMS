@@ -3,8 +3,26 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
 #define KEY_VALUE_SIZE 25
+
+struct tpms_general {
+    char *model;
+    char *time;
+    char *state;
+    char *id;
+    int status;
+    int flags;
+    int repeat;
+    float pressure_KPA;
+    float temperature_C;
+    int maybe_battery;
+};
+
+void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct);
+
+void parserElement(char *element, char *key, char *value);
+
+struct tpms_general generalParser(char *signal);
 
 /*{
     "time" : "2020-12-04 13:09:17",
@@ -30,24 +48,3 @@
     "maybe_battery" : 56,
     "mic" : "CHECKSUM"
 }*/
-
-
-
-struct tpms_general {
-    char *model;
-    char *time;
-    char *state;
-    char *id;
-    int status;
-    int flags;
-    int repeat;
-    float pressure_KPA;
-    float temperature_C;
-    int maybe_battery;
-};
-
-void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct);
-
-void parserElement(char *element, char *key, char *value);
-
-struct tpms_general generalParser(char *signal);

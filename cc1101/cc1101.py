@@ -22,7 +22,7 @@ if __name__ == "__main__":
     
     with cc1101.CC1101() as transceiver:
         configCC1101(transceiver)
-        print("modulation format", transceiver.get_modulation_format().name)
+        #print("modulation format", transceiver.get_modulation_format().name)
         transmitC1101(transceiver, sys.argv[0].encode())#We need convert the frame to a bytes array
     
     pass
