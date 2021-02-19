@@ -1,6 +1,8 @@
 #include <time.h>
 #include <stdbool.h>
 #include <string.h>
+#include <pthread.h> //Only for compilers with the pthread librarie
+#include <unistd.h>
 
 
 #ifndef TPMS_STRUCT
@@ -37,6 +39,7 @@ void enableSniperMode();
 void disableSniperMode() ;
 void enableDisasterMode();
 void disableDisasterMode();
+void turnOff();
 
 void refreshView();
 

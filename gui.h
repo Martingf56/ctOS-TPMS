@@ -219,6 +219,14 @@ void create_list(GtkWidget **list, GtkWidget **listbox, GtkWidget **scrolledwind
 
 }
 
+void gturnOff() {
+    turnOff();
+    disableSniperMode();
+    disableDisasterMode();
+    //gtk_main_quit();
+    pthread_exit();
+}
+
 //AttackOne window
 void attOneWindow(){
     const gchar *model_names[num_models] = {"Toyota", "Citroen"};
@@ -434,11 +442,11 @@ void MainWindow(){
 
     attAllWindow();
     
-    g_signal_connect(BtnClose, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(BtnClose, "clicked", G_CALLBACK(gturnOff), NULL);
     g_signal_connect(BtnAttackOne, "clicked", G_CALLBACK(show_attOne_widgets), NULL);
     g_signal_connect(BtnAttackAll, "clicked", G_CALLBACK(show_attAll_widgets), NULL);
     g_signal_connect(BtnMainWindow, "clicked", G_CALLBACK(go_main_window), NULL);
-    g_signal_connect(FrmPrincipal, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(FrmPrincipal, "destroy", G_CALLBACK(gturnOff), NULL);
 
     gtk_widget_show_all(FrmPrincipal);
     hide_first();

@@ -8,6 +8,7 @@ int pidRTL;
 /*Bools of control*/
 bool disasterMode;
 bool sniperMode;
+bool isRunning;
 
 void newlistOfSignals() {
     listOfSignals.start = 0;
@@ -15,6 +16,7 @@ void newlistOfSignals() {
 }
 
 void startGUI() {
+    isRunning = true;
     initGUI();
     //Launch UI
 }
@@ -41,6 +43,10 @@ void enableDisasterMode() {
 
 void disableDisasterMode() {
     disasterMode = false;
+}
+
+void turnOff() {
+    isRunning = false;
 }
 
 void refreshView() {
@@ -117,10 +123,11 @@ int launchRTL433() {
 void runController() {
     char buff[BUFFER_SIZE], *signal_buff;
     int fd_rtl;
+    pthread_t gui_thread_id;
     //init array
     newlistOfSignals();
-    //init gui
-    startGUI();
+    //init gui in a new thread
+    pthread_create(&gui_thread_id, NULL, (void *)startGUI, NULL); 
 
     //initialize bools
     sniperMode = disasterMode = false;
