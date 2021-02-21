@@ -67,7 +67,6 @@ void parserElement(char *element, char *key, char *value) {
 struct tpms_general generalParser(char *signal) {
     char *element, *key ,*value;
     struct tpms_general signalStruct;
-    int i = 0;
     char *signal_aux = (char*)malloc(strlen(signal));
 
     strcpy(signal_aux, signal);

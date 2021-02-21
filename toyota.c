@@ -45,9 +45,9 @@ void toyotaTPMS(char *status, char *id, float pressure, float temperature) {
     char *lastBit = (char *)malloc(1);
     strncpy(lastBit, frameToModulate + strlen(frameToModulate) - 1, strlen(frameToModulate)); //obtain the last bit
     if(!strcmp(lastBit, "1"))//we deny the last bit
-        strncpy(lastBit, "0", 1);
+        lastBit[0] = '0';
     else
-        strncpy(lastBit, "1", 1);
+        lastBit[0] = '1';
 
     char *finaltrail = (char *)malloc(3);
     strcpy(finaltrail, lastBit);

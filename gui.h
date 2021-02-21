@@ -101,7 +101,6 @@ void go_main_window(GtkWidget *button){
 //Initialize the list
 void SbListInit(GtkWidget *List, GtkWidget *scrolledwindow){
     GtkCellRenderer *renderer;
-    GtkCellRenderer *renderer2;
     GtkTreeViewColumn *column;
     GtkListStore *store;
 
@@ -223,8 +222,8 @@ void gturnOff() {
     turnOff();
     disableSniperMode();
     disableDisasterMode();
-    //gtk_main_quit();
-    pthread_exit();
+    gtk_main_quit();
+    //pthread_exit();
 }
 
 //AttackOne window

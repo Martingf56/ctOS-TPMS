@@ -20,7 +20,6 @@ char* differential_manchester_encoder(char* frame){
     char* differential_manchester_frame = (char*)malloc(strlen(frame) * 2);
     strcpy(differential_manchester_frame, ""); /*inicializamos a vacio para luego poder concatenarmanch*/
     int i;
-    int bit_control;
     char* pattern;
     if(frame[0] == '0'){
         strcat(differential_manchester_frame, "01");
