@@ -86,6 +86,7 @@ int addSignal(const struct tpms_general signal) {
 
     listOfSignals.tpmsSignals[listOfSignals.end] = newTpmsElement(signal);
 
+    return 1;
 }
 
 int launchRTL433() {
@@ -118,6 +119,8 @@ int launchRTL433() {
         perror("fork creation failed\n");
         return -1;
     }    
+
+    return 0;
 }
 
 void runController() {
@@ -126,14 +129,16 @@ void runController() {
     pthread_t gui_thread_id;
     //init array
     newlistOfSignals();
+    isRunning = true;
     //init gui in a new thread
     pthread_create(&gui_thread_id, NULL, (void *)startGUI, NULL); 
+    //startGUI();
 
     //initialize bools
     sniperMode = disasterMode = false;
     pidRTL = -1;
 
-    while(1) {//Run program
+    while(isRunning) {//Run program
         while(sniperMode || disasterMode) {
             if(pidRTL == -1) { //Look if rtl is not running
                 if((fd_rtl = launchRTL433()) == -1){ //Laucnh the rtl program
@@ -144,8 +149,10 @@ void runController() {
                 }
             }
 
-            signal_buff = malloc(1000);
-            strcpy(signal_buff, "");
+            if(signal_buff == NULL) {
+                signal_buff = malloc(1000);
+                strcpy(signal_buff, "");
+            }
             while (read(fd_rtl, buff, 1)){
                 //Generate the string
                 strcat(signal_buff, buff);
