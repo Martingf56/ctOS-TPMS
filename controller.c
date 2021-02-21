@@ -37,12 +37,20 @@ void disableSniperMode() {
     sniperMode = false;
 }
 
+bool getSniperMode() {
+    return sniperMode;
+}
+
 void enableDisasterMode() {
     disasterMode = true;
 }
 
 void disableDisasterMode() {
     disasterMode = false;
+}
+
+bool getDisasterMode() {
+    return disasterMode;
 }
 
 void turnOff() {
@@ -53,10 +61,10 @@ void refreshView() {
     char temperature[20], pressure[20];
     SbListClear(List);
     for(int i = listOfSignals.start; i != listOfSignals.end; i++) {
-        if(listOfSignals.tpmsSignals[i].time) {
+       /* if(listOfSignals.tpmsSignals[i].time) {
             listOfSignals.start = (listOfSignals.start + 1) % MAX_SIGNALS ;
         }
-        else {
+        else {*/
             sprintf(temperature, "%f", listOfSignals.tpmsSignals[i].signal.temperature_C);
             sprintf(pressure, "%f", listOfSignals.tpmsSignals[i].signal.pressure_KPA);
             SbListInsert(List,
@@ -64,7 +72,7 @@ void refreshView() {
                             listOfSignals.tpmsSignals[i].signal.model,
                             temperature,
                             pressure);
-        }
+      // }
     }
 }
 
@@ -79,12 +87,12 @@ int addSignal(const struct tpms_general signal) {
     if (signal.id == NULL)
         return -1;
 
+
+    listOfSignals.tpmsSignals[listOfSignals.end] = newTpmsElement(signal);
     //Pointers of circular array
     listOfSignals.end = (listOfSignals.end + 1) % MAX_SIGNALS;
     listOfSignals.start += listOfSignals.start == listOfSignals.end;
     listOfSignals.start %= MAX_SIGNALS;
-
-    listOfSignals.tpmsSignals[listOfSignals.end] = newTpmsElement(signal);
 
     return 1;
 }
@@ -130,9 +138,12 @@ void runController() {
     //init array
     newlistOfSignals();
     isRunning = true;
+    addSignal(generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a2\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 242.792, \"temperature_C\" : 15.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}"));
     //init gui in a new thread
     pthread_create(&gui_thread_id, NULL, (void *)startGUI, NULL); 
     //startGUI();
+
+   // addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5a\",\"status\" : 131,\"pressure_kPa\" : 253.382,\"temperature_C\" : 14.000,\"mic\" : \"CRC\"}"));
 
     //initialize bools
     sniperMode = disasterMode = false;
@@ -166,7 +177,6 @@ void runController() {
                     }
                     else if(sniperMode){
                         addSignal(str);
-                        refreshView();
                     }
 
                     free(signal_buff);
@@ -175,7 +185,6 @@ void runController() {
                 }
 
             }
-            refreshView();
         }
 
     }

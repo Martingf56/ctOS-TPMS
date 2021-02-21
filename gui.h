@@ -19,7 +19,8 @@
     GtkWidget    *LblTitleOne;  //Label for attackOne window
     GtkWidget    *LblTitleAll;  //Label for attackAll window
 
-//widgets for attack one window  
+//widgets for attack one window 
+    GTimer       *Timer;
     GtkWidget    *List;          //List
     GtkWidget    *EntryID;       //Entry for id
     GtkWidget    *LblID;         //Label for entry id
@@ -42,7 +43,14 @@
     GtkWidget    *LblImg;          //Label for imageradar
 
 
+gboolean refreshTimer() {
+    if(!getDisasterMode() && !getSniperMode())
+        return false;
     
+    refreshView();
+    return true;
+}
+
 //Hidden widgets in main window
 void hide_first(){
     gtk_widget_hide(BtnMainWindow);
@@ -67,6 +75,7 @@ void show_attOne_widgets(GtkWidget *button){
     gtk_widget_show(ListBox);
 
     enableSniperMode();
+    g_timeout_add_seconds(5, refreshTimer, List);
 }
 
 void show_attAll_widgets(GtkWidget *button){

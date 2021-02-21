@@ -37,8 +37,10 @@ void sniperModeAttack(char *id, char *nameCar, char *temperature, char *pressure
 
 void enableSniperMode();
 void disableSniperMode() ;
+bool getSniperMode();
 void enableDisasterMode();
 void disableDisasterMode();
+bool getDisasterMode();
 void turnOff();
 
 void refreshView();
