@@ -297,17 +297,6 @@ void attOneWindow(){
     //Initialize the list
     SbListInit(List, ScrolledWndow);
 
-    //Remove all rows from the list
-    SbListClear(List);
-
-    //Insert elements in the list
-    SbListInsert(List, "fb26ac5a", "Toyota", "15.000", "253.382");
-    SbListInsert(List, "fb26ac5b", "Toyota", "14.000", "242.792");
-    SbListInsert(List, "fb26ac5c", "Toyota", "14.000", "333.382");
-    SbListInsert(List, "8a58b6a2", "Citroen", "18.000", "242.792");
-    SbListInsert(List, "8a58f9a2", "Citroen", "13.000", "253.382");
-    SbListInsert(List, "7a58f9a1", "Citroen", "14.000", "242.792");
-
     //Get the selection associated with the list
     Selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(List));
     

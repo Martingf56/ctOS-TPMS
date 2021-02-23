@@ -10,8 +10,8 @@
 #include "tpms_structs.h"
 #endif
 
-#define MAX_SIGNALS 20
-#define MAX_TIME 6 //Max time for use a tpms signal
+#define MAX_SIGNALS 3
+#define MAX_TIME 10 //Max time for use a tpms signal
 #define BUFFER_SIZE 1 //For read rtl
 #define PIPE 2 //PIPE
 #define READ_END 0  //PIPE
@@ -20,13 +20,14 @@
 
 struct tpmsElement {
    struct tpms_general signal;//Contiene informacion
-   clock_t time; //Para saber cuanto lleva
+   time_t time; //Para saber cuanto lleva
 };
 
 struct listOfSignals {
     struct tpmsElement tpmsSignals[MAX_SIGNALS]; //El array que se mostrará en la lista
     int start;
     int end;
+    int size;
 };
 
 void newlistOfSignals();

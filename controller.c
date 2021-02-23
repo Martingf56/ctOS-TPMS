@@ -1,4 +1,5 @@
 #include "includes/controller.h"
+#include <signal.h>
 
 #include "gui.h"
 
@@ -11,8 +12,9 @@ bool sniperMode;
 bool isRunning;
 
 void newlistOfSignals() {
-    listOfSignals.start = 0;
-    listOfSignals.end = 0;
+    listOfSignals.start = -1;
+    listOfSignals.end = -1;
+    listOfSignals.size = 0;
 }
 
 void startGUI() {
@@ -53,26 +55,40 @@ bool getDisasterMode() {
     return disasterMode;
 }
 
+void killRTL433() {
+    if(pidRTL == -1) //IMPORTANT
+        return;
+    //Send signal to process group of child
+    kill((-1*pidRTL), SIGTERM);
+    pidRTL = -1;
+} 
+
 void turnOff() {
     isRunning = false;
+    killRTL433();
 }
 
 void refreshView() {
     char temperature[20], pressure[20];
     SbListClear(List);
-    for(int i = listOfSignals.start; i != listOfSignals.end; i++) {
-       /* if(listOfSignals.tpmsSignals[i].time) {
-            listOfSignals.start = (listOfSignals.start + 1) % MAX_SIGNALS ;
+    //if(listOfSignals.start == -1) return;
+    int pos = listOfSignals.start;
+    for(int i = 0; i < listOfSignals.size; i++){
+        if(difftime(time(NULL), listOfSignals.tpmsSignals[pos].time) >= MAX_TIME) {
+            listOfSignals.start = (listOfSignals.start + 1) % MAX_SIGNALS;
+            listOfSignals.size--;
         }
-        else {*/
-            sprintf(temperature, "%f", listOfSignals.tpmsSignals[i].signal.temperature_C);
-            sprintf(pressure, "%f", listOfSignals.tpmsSignals[i].signal.pressure_KPA);
+        else {
+
+            sprintf(temperature, "%f", listOfSignals.tpmsSignals[pos].signal.temperature_C);
+            sprintf(pressure, "%f", listOfSignals.tpmsSignals[pos].signal.pressure_KPA);
             SbListInsert(List,
-                            listOfSignals.tpmsSignals[i].signal.id,
-                            listOfSignals.tpmsSignals[i].signal.model,
+                            listOfSignals.tpmsSignals[pos].signal.id,
+                            listOfSignals.tpmsSignals[pos].signal.model,
                             temperature,
                             pressure);
-      // }
+        }
+      pos = (pos+1) % MAX_SIGNALS;
     }
 }
 
@@ -87,15 +103,21 @@ int addSignal(const struct tpms_general signal) {
     if (signal.id == NULL)
         return -1;
 
-
-    listOfSignals.tpmsSignals[listOfSignals.end] = newTpmsElement(signal);
     //Pointers of circular array
     listOfSignals.end = (listOfSignals.end + 1) % MAX_SIGNALS;
+
+    listOfSignals.tpmsSignals[listOfSignals.end] = newTpmsElement(signal);
+    listOfSignals.size++;
+    if(listOfSignals.size > MAX_SIGNALS) listOfSignals.size = MAX_SIGNALS;
+    
     listOfSignals.start += listOfSignals.start == listOfSignals.end;
+    if(listOfSignals.start == -1) listOfSignals.start = 0;
     listOfSignals.start %= MAX_SIGNALS;
 
     return 1;
 }
+
+
 
 int launchRTL433() {
     int pidFork, fd_pipe[2];
@@ -107,7 +129,7 @@ int launchRTL433() {
 
     pidFork = fork();
     if(pidFork == 0) {//child process
-        char *args[] = {"sh", "-c", "rtl_433 -C si -F json", NULL};
+        char *args[] = {"sh", "-c", "rtl_433 -C si -F json -R 82 -R 88", NULL};
         
         close(fd_pipe[READ_END]);
         dup2(fd_pipe[WRITE_END], STDOUT_FILENO);
@@ -117,10 +139,14 @@ int launchRTL433() {
             perror("Error when launching the program");
             return -1;
         }
+        
     }
     else if(pidFork > 0){//parent process
+    
         close(fd_pipe[WRITE_END]);
         pidRTL = pidFork;
+        //Make child process the leader of its own process group. This allows signals to also be delivered to processes forked by the child process.
+        setpgid(pidRTL, 0);
         return fd_pipe[READ_END];
     }
     else{
@@ -139,6 +165,10 @@ void runController() {
     newlistOfSignals();
     isRunning = true;
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a2\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 242.792, \"temperature_C\" : 15.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}"));
+    addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5a\",\"status\" : 131,\"pressure_kPa\" : 253.382,\"temperature_C\" : 14.000,\"mic\" : \"CRC\"}"));
+    addSignal(generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a3\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 215.662, \"temperature_C\" : 11.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}"));
+    addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5b\",\"status\" : 131,\"pressure_kPa\" : 280.777,\"temperature_C\" : 20.000,\"mic\" : \"CRC\"}"));
+    addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5b\",\"status\" : 131,\"pressure_kPa\" : 266.666,\"temperature_C\" : 17.000,\"mic\" : \"CRC\"}"));
     //init gui in a new thread
     pthread_create(&gui_thread_id, NULL, (void *)startGUI, NULL); 
     //startGUI();
@@ -186,6 +216,7 @@ void runController() {
 
             }
         }
+        
 
     }
 }
