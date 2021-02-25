@@ -90,6 +90,8 @@ void refreshView() {
         }
       pos = (pos+1) % MAX_SIGNALS;
     }
+    gtk_entry_set_text(GTK_ENTRY(EntryID), "");
+    gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel), NULL);
 }
 
 struct tpmsElement newTpmsElement(struct tpms_general str) {
@@ -168,7 +170,7 @@ void runController() {
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5a\",\"status\" : 131,\"pressure_kPa\" : 253.382,\"temperature_C\" : 14.000,\"mic\" : \"CRC\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a3\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 215.662, \"temperature_C\" : 11.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5b\",\"status\" : 131,\"pressure_kPa\" : 280.777,\"temperature_C\" : 20.000,\"mic\" : \"CRC\"}"));
-    addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5b\",\"status\" : 131,\"pressure_kPa\" : 266.666,\"temperature_C\" : 17.000,\"mic\" : \"CRC\"}"));
+    addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5c\",\"status\" : 131,\"pressure_kPa\" : 266.666,\"temperature_C\" : 17.000,\"mic\" : \"CRC\"}"));
     //init gui in a new thread
     pthread_create(&gui_thread_id, NULL, (void *)startGUI, NULL); 
     //startGUI();

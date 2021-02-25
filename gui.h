@@ -31,6 +31,8 @@
     GtkWidget    *ScrolledWndow; //Scrolled window for the list
     GtkTreeSelection *Selection; //List selection
     GtkWidget    *ListBox;       //Container for scrolledwindow, entrybox and buttonentry
+    GdkPixbufAnimation *AnimationOne; //Animation for load a gif
+    GtkWidget    *ImageWorks;      //Image to display the animation
     
 //widgets for attack all window
     GtkWidget    *List2;           //List
@@ -56,6 +58,7 @@ void hide_first(){
     gtk_widget_hide(BtnMainWindow);
     gtk_widget_hide(LblTitleOne);
     gtk_widget_hide(LblTitleAll);
+    gtk_widget_hide(ImageWorks);
     gtk_widget_hide(ListBox);
     gtk_widget_hide(ImageRadar);
     gtk_widget_hide(LblImg);
@@ -105,6 +108,7 @@ void go_main_window(GtkWidget *button){
 
     disableDisasterMode();
     disableSniperMode();
+    killRTL433();
 }
 
 //Initialize the list
@@ -174,9 +178,16 @@ void SbListInsert(GtkWidget *List, const gchar *str, const gchar *str2, const gc
                         -1);
 }
 
+gboolean refreshImageWorks(){
+    gtk_widget_hide(ImageWorks);
+    gtk_widget_set_sensitive(GTK_WIDGET(ButtonEntry), true);
+    return false;
+}
 //funtion button attack on attackone window
 void function_btnAttack(GtkWidget *widget){
-
+    gtk_widget_set_sensitive(GTK_WIDGET(ButtonEntry), false);
+    gtk_widget_show(ImageWorks);
+    g_timeout_add_seconds(4, refreshImageWorks, ImageWorks);
 }
 
 //Changes the active row of drop down list
@@ -184,7 +195,6 @@ void SbListChange(GtkWidget *widget){
     GtkTreeIter iter; //Item
     GtkTreeModel *model; //Model    
     gchar *value; //Element content
-    
 
     //Sets iter to the currently selected node 
     if(gtk_tree_selection_get_selected(GTK_TREE_SELECTION(widget), &model, &iter)){
@@ -201,7 +211,7 @@ void SbListChange(GtkWidget *widget){
         }else if(g_strcmp0(value, "Citroen") == 0){
             gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel), "Citroen");
         }
-
+        
         g_signal_connect(ButtonEntry, "clicked", G_CALLBACK(function_btnAttack), NULL);
 
         g_free(value);
@@ -240,12 +250,13 @@ void attOneWindow(){
     const gchar *model_names[num_models] = {"Toyota", "Citroen"};
 
     LblTitleOne = gtk_label_new("Attack One");
-    gtk_layout_put(GTK_LAYOUT(Layout), LblTitleOne, 189, 40);
+    gtk_layout_put(GTK_LAYOUT(Layout), LblTitleOne, 160, 60);
     gtk_widget_set_size_request(LblTitleOne, 80, 30);
     //name for css
     gtk_widget_set_name(LblTitleOne,"LblTitleOne");
 
     create_list(&List, &ListBox, &ScrolledWndow);
+    gtk_widget_set_name(List,"List");
 
     //Create widgets for attackOne window
     LblID = gtk_label_new("ID:");
@@ -272,11 +283,17 @@ void attOneWindow(){
     //Create attack button
     ButtonEntry = gtk_button_new_with_label("Attack");
     gtk_widget_set_size_request(ButtonEntry, 80, 25);
+    gtk_widget_set_name(ButtonEntry,"ButtonEntry");
 
 
     //Create horizontal container for entry and combobox
     EntryBox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_size_request(ListBox, 350, 50);
+
+    //Creates a new animation by loading it from a file
+    AnimationOne = gdk_pixbuf_animation_new_from_file("./img/it_works.gif", NULL);
+    //Creates an image displaying the given animation
+    ImageWorks = gtk_image_new_from_animation(AnimationOne);
 
     //Add widgets to horizontal container
     gtk_box_pack_start(GTK_BOX(EntryBox), LblID, TRUE, TRUE, 5);
@@ -289,6 +306,8 @@ void attOneWindow(){
 
     //Add button entry to ListBox
     gtk_box_pack_start(GTK_BOX(ListBox), ButtonEntry, FALSE, FALSE, 5);
+
+    gtk_box_pack_start(GTK_BOX(ListBox), ImageWorks, FALSE, FALSE, 0);
     
 
     //Add listBox to layout
@@ -321,13 +340,14 @@ void stop_attacking_all(GtkWidget *button){
 //AttackAll window
 void attAllWindow(){
     LblTitleAll = gtk_label_new("Attack All");
-    gtk_layout_put(GTK_LAYOUT(Layout), LblTitleAll, 189, 40);
+    gtk_layout_put(GTK_LAYOUT(Layout), LblTitleAll, 160, 40);
     gtk_widget_set_size_request(LblTitleAll, 80, 30);
     //name for css
     gtk_widget_set_name(LblTitleAll,"LblTitleAll");
 
 
     create_list(&List2, &ListBox2, &ScrolledWndow2);
+    gtk_widget_set_name(List2,"List2");
 
     //name for css
     gtk_widget_set_name(List2,"List2");
@@ -335,10 +355,12 @@ void attAllWindow(){
     //Creates attack button
     ButtonAttack = gtk_button_new_with_label("Attack");
     gtk_widget_set_size_request(ButtonAttack, 80, 25);
+    gtk_widget_set_name(ButtonAttack,"ButtonAttack");
 
     //Creates attack button
     ButtonStop = gtk_button_new_with_label("Stop");
     gtk_widget_set_size_request(ButtonStop, 80, 25);
+    gtk_widget_set_name(ButtonStop,"ButtonStop");
     
 
     LblImg = gtk_label_new("Attacking...");
@@ -410,7 +432,7 @@ void MainWindow(){
     gtk_layout_put(GTK_LAYOUT(Layout), Image, 0, 0);
 
     LblTitle = gtk_label_new("ctOS-TPMS");
-    gtk_layout_put(GTK_LAYOUT(Layout), LblTitle, 189, 40);
+    gtk_layout_put(GTK_LAYOUT(Layout), LblTitle, 145, 130);
     gtk_widget_set_size_request(LblTitle, 80, 30);
     //name for css
     gtk_widget_set_name(LblTitle,"LblTitle");
@@ -418,18 +440,22 @@ void MainWindow(){
     BtnClose = gtk_button_new_with_label("Exit");
     gtk_layout_put(GTK_LAYOUT(Layout), BtnClose, 189, 380);
     gtk_widget_set_size_request(BtnClose, 80, 35);
+    gtk_widget_set_name(BtnClose,"BtnClose");
 
     BtnAttackOne = gtk_button_new_with_label("Attack One"); 
     gtk_layout_put(GTK_LAYOUT(Layout), BtnAttackOne, 79, 330);
     gtk_widget_set_size_request(BtnAttackOne, 140, 35);
+    gtk_widget_set_name(BtnAttackOne,"BtnAttackOne");
     
     BtnAttackAll = gtk_button_new_with_label("Attack All");
     gtk_layout_put(GTK_LAYOUT(Layout), BtnAttackAll, 239, 330);
-    gtk_widget_set_size_request(BtnAttackAll, 140, 35);   
+    gtk_widget_set_size_request(BtnAttackAll, 140, 35);
+    gtk_widget_set_name(BtnAttackAll,"BtnAttackAll");   
 
     BtnMainWindow = gtk_button_new();
     gtk_layout_put(GTK_LAYOUT(Layout), BtnMainWindow, 10, 10);
-    gtk_widget_set_size_request(BtnMainWindow, 30, 30); 
+    gtk_widget_set_size_request(BtnMainWindow, 30, 30);
+    gtk_widget_set_name(BtnMainWindow,"BtnMainWindow");    
 
     ImgBtnBack = gtk_image_new_from_file ("./img/back_6.png");
 

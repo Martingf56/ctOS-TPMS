@@ -42,6 +42,7 @@ bool getSniperMode();
 void enableDisasterMode();
 void disableDisasterMode();
 bool getDisasterMode();
+void killRTL433();
 void turnOff();
 
 void refreshView();

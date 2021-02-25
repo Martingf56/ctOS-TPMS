@@ -1,17 +1,57 @@
 /*all label*/
 label{
-    color: #343332;
+    color: #021725;
+    /*background-color: purple;*/
 }
 
 /*change some label*/
 label#LblTitle, label#LblTitleAll, label#LblTitleOne{
-    color: #F37A1B;
+    color: #E45407;
     font-weight: bold;
+    text-decoration: underline;
+}
+
+label#LblTitle{
+    font-size: 30px;
+}
+label#LblTitleAll, label#LblTitleOne{
+    font-size: 25px;
 }
 
 label#LblImg, label#LblID, label#LblModel{
-    color: #E84706;
+    color: #021725;
+    background-color:#0F9DF3;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #021725;
     font-weight: bold;
 }  
 
+button{
+    border-color: black;
+    background-color: #0F9DF3;
+}
+button#BtnClose, button#BtnAttackOne, button#BtnAttackAll, button#ButtonEntry, button#ButtonAttack, button#ButtonStop{
+    background: #021725;
+    
+}
+button#BtnMainWindow{
+    background: white;
+    border-radius: 10px;
+}
 
+button#BtnClose label, button#BtnAttackOne label, button#BtnAttackAll label, button#ButtonEntry label, button#ButtonAttack label, button#ButtonStop label{
+    color:white;
+}
+
+button:hover{
+    box-shadow: 0 12px 12px 0 #0F9DF3, 0 17px 25px 0 #0F9DF3;
+}
+
+#List, #List2{
+    background-color: #4EC8F9;
+}
+
+#List:hover, #List2:hover{
+    background-color: #4EF4F9;
+}
