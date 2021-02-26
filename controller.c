@@ -70,8 +70,9 @@ void turnOff() {
 
 void refreshView() {
     char temperature[20], pressure[20];
+
     SbListClear(List);
-    //if(listOfSignals.start == -1) return;
+
     int pos = listOfSignals.start;
     for(int i = 0; i < listOfSignals.size; i++){
         if(difftime(time(NULL), listOfSignals.tpmsSignals[pos].time) >= MAX_TIME) {
@@ -79,7 +80,6 @@ void refreshView() {
             listOfSignals.size--;
         }
         else {
-
             sprintf(temperature, "%f", listOfSignals.tpmsSignals[pos].signal.temperature_C);
             sprintf(pressure, "%f", listOfSignals.tpmsSignals[pos].signal.pressure_KPA);
             SbListInsert(List,
@@ -90,8 +90,8 @@ void refreshView() {
         }
       pos = (pos+1) % MAX_SIGNALS;
     }
-    gtk_entry_set_text(GTK_ENTRY(EntryID), "");
-    gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel), NULL);
+   /* gtk_entry_set_text(GTK_ENTRY(EntryID), "");
+    gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel), NULL);*/
 }
 
 struct tpmsElement newTpmsElement(struct tpms_general str) {
@@ -110,10 +110,12 @@ int addSignal(const struct tpms_general signal) {
 
     listOfSignals.tpmsSignals[listOfSignals.end] = newTpmsElement(signal);
     listOfSignals.size++;
-    if(listOfSignals.size > MAX_SIGNALS) listOfSignals.size = MAX_SIGNALS;
+    if(listOfSignals.size > MAX_SIGNALS)
+        listOfSignals.size = MAX_SIGNALS;
     
     listOfSignals.start += listOfSignals.start == listOfSignals.end;
-    if(listOfSignals.start == -1) listOfSignals.start = 0;
+    if(listOfSignals.start == -1)
+        listOfSignals.start = 0;
     listOfSignals.start %= MAX_SIGNALS;
 
     return 1;
@@ -166,11 +168,14 @@ void runController() {
     //init array
     newlistOfSignals();
     isRunning = true;
+    /*
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a2\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 242.792, \"temperature_C\" : 15.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5a\",\"status\" : 131,\"pressure_kPa\" : 253.382,\"temperature_C\" : 14.000,\"mic\" : \"CRC\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a3\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 215.662, \"temperature_C\" : 11.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5b\",\"status\" : 131,\"pressure_kPa\" : 280.777,\"temperature_C\" : 20.000,\"mic\" : \"CRC\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5c\",\"status\" : 131,\"pressure_kPa\" : 266.666,\"temperature_C\" : 17.000,\"mic\" : \"CRC\"}"));
+    */
+    
     //init gui in a new thread
     pthread_create(&gui_thread_id, NULL, (void *)startGUI, NULL); 
     //startGUI();
@@ -192,7 +197,7 @@ void runController() {
                 }
             }
 
-            if(signal_buff == NULL) {
+            if(signal_buff) {
                 signal_buff = malloc(1000);
                 strcpy(signal_buff, "");
             }
@@ -218,7 +223,5 @@ void runController() {
 
             }
         }
-        
-
     }
 }

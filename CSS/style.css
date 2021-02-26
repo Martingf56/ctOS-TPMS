@@ -48,10 +48,17 @@ button:hover{
     box-shadow: 0 12px 12px 0 #0F9DF3, 0 17px 25px 0 #0F9DF3;
 }
 
+entry#EntryID {
+    color: white;
+    background-color: rgba(67, 70, 71, 0.9);
+    border: 1px solid #0F9DF3;
+}
+
 #List, #List2{
-    background-color: #4EC8F9;
+    background-color: rgba(67, 70, 71, 0.9);
+    color: white;
 }
 
 #List:hover, #List2:hover{
-    background-color: #4EF4F9;
+    background-color: #0F9DF3;
 }

@@ -5,6 +5,9 @@
 #define num_columns 4   //Number of columns for list
 #define num_models 2    //Number of car models for drop down list
 
+#define REFRESH_VIEW 5
+#define GIF_TIME_ATTONE 3
+
     GtkWidget    *ImgBtnBack;       //Image for the back button  
     GtkWidget    *BtnMainWindow;    //Back button
 
@@ -78,7 +81,7 @@ void show_attOne_widgets(GtkWidget *button){
     gtk_widget_show(ListBox);
 
     enableSniperMode();
-    g_timeout_add_seconds(5, refreshTimer, List);
+    g_timeout_add_seconds(REFRESH_VIEW, refreshTimer, List);
 }
 
 void show_attAll_widgets(GtkWidget *button){
@@ -187,7 +190,7 @@ gboolean refreshImageWorks(){
 void function_btnAttack(GtkWidget *widget){
     gtk_widget_set_sensitive(GTK_WIDGET(ButtonEntry), false);
     gtk_widget_show(ImageWorks);
-    g_timeout_add_seconds(4, refreshImageWorks, ImageWorks);
+    g_timeout_add_seconds(GIF_TIME_ATTONE, refreshImageWorks, ImageWorks);
 }
 
 //Changes the active row of drop down list
@@ -271,6 +274,7 @@ void attOneWindow(){
 
     EntryID = gtk_entry_new();
     gtk_entry_set_width_chars(GTK_ENTRY(EntryID), 8);
+    gtk_widget_set_name(EntryID, "EntryID");
 
     //Create drop down list and add options
     ComboboxModel = gtk_combo_box_text_new();
@@ -278,6 +282,7 @@ void attOneWindow(){
     for(i = 0; i < num_models; i++){
         gtk_combo_box_text_append (GTK_COMBO_BOX_TEXT (ComboboxModel), model_names[i], model_names[i]);
     }
+    gtk_widget_set_name(ComboboxModel, "ComboboxModel");
     
 
     //Create attack button
