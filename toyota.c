@@ -1,14 +1,14 @@
 
 #include "includes/toyota.h"
 
-void toyotaTPMS(char *status, char *id, float pressure, float temperature) {
+void toyotaTPMS(int status, char *id, float pressure, float temperature) {
 
     // full preamble is 0101 0101 0011 11 = 55 3c
     // could be shorter   11 0101 0011 11
     char *preamble = "01010101001111";
 
     /*Convert params data to binary*/
-    char *systemStatus = dec2bin(atoi(status), 8);
+    char *systemStatus = dec2bin(status, 8);
     char *systemID = dec2bin((long int)strtol(id, 0, 16), 32);
     char *systemPressure = dec2bin((int)(PRESSURE_CONSTANT*(pressure + PRESSURE_OFFSET)), 8);
     char *systemTemperature = dec2bin((int)(temperature + TEMPERATURE_OFFSET), 8);

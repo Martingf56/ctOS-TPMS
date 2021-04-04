@@ -23,12 +23,14 @@ void startGUI() {
     //Launch UI
 }
 
-void sniperModeAttack(char *id, char *nameCar, char *temperature, char *pressure) {
-    /*
-    Si es toyota
-        lanzo ataque toyota
-    Si es citroen ataque citroen
-    */
+bool launchAttack(struct tpms_general tpms) {
+    return transmitTPMSSignal(tpms);
+}
+
+void sniperModeAttack(char *id, char *nameCar) {
+    struct tpms_general tpms = newFakeSignal(id, nameCar);
+
+    launchAttack(tpms);//if bad display problems on the transmit
 }
 
 void enableSniperMode() {
@@ -210,7 +212,8 @@ void runController() {
                     struct tpms_general str = generalParser(signal_buff);
                     
                     if(disasterMode) {
-                        //launch attack directly
+                        launchAttack(str);
+                        addSignal(str);
                     }
                     else if(sniperMode){
                         addSignal(str);

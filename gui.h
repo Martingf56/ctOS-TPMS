@@ -191,6 +191,8 @@ void function_btnAttack(GtkWidget *widget){
     gtk_widget_set_sensitive(GTK_WIDGET(ButtonEntry), false);
     gtk_widget_show(ImageWorks);
     g_timeout_add_seconds(GIF_TIME_ATTONE, refreshImageWorks, ImageWorks);
+
+    //sniperModeAttack((char*)gtk_entry_set_text(EntryID), (char*)gtk_entry_set_text(LblModel)); Need fix thing on gui for do this better
 }
 
 //Changes the active row of drop down list

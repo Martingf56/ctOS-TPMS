@@ -1,5 +1,32 @@
 #include "includes/tpms_structs.h"
 
+struct tpms_general newFakeSignal(char *id, char *nameCar) {
+    struct tpms_general tpms_signal;
+
+    tpms_signal.id = (char*)malloc(strlen(id));
+    strncpy(tpms_signal.id, id, strlen(id));
+    tpms_signal.model = (char*)malloc(strlen(nameCar));
+    strncpy(tpms_signal.model, nameCar, strlen(nameCar));
+
+    //Fake values
+    tpms_signal.temperature_C = 0;
+    tpms_signal.pressure_KPA = 0;
+
+    //Constant values Toyota
+    if(!strncmp(nameCar, "Toyota", strlen("Toyota"))){
+        tpms_signal.status = 131;
+    }
+
+    //Constant values Citroen
+    if(!strncmp(nameCar, "Citroen", strlen("Citroen"))){
+        tpms_signal.state = "13";
+        tpms_signal.flags = 0;
+        tpms_signal.maybe_battery = 56;
+    }
+
+    return tpms_signal;
+}
+
 void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct) {
 
     if(!strncmp(key, "model", strlen("model"))) {
