@@ -1,7 +1,7 @@
 
 #include "includes/citroen.h"
 
-void citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, float temperature, int battery/*, char *filename*/){
+char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, float temperature, int battery/*, char *filename*/){
 
     /*Preambulo: parte inicial de trama, indica el inicio de la comunicacion*/
     char* preamble = "01010101010101010101010101010110";
@@ -70,4 +70,5 @@ void citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, f
     printf("%s\n%s\n", "Trama final",finalCodifiedFrame);
     printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
 
+    return finalCodifiedFrame;
 }

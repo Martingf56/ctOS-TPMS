@@ -10,6 +10,8 @@
 #include "tpms_structs.h"
 #endif
 
+#include "transmiter.h"
+
 #define MAX_SIGNALS 15
 #define MAX_TIME 30 //Max time for use a tpms signal
 #define BUFFER_SIZE 1 //For read rtl
@@ -34,7 +36,7 @@ void newlistOfSignals();
 
 void startGUI();
 
-void sniperModeAttack(char *id, char *nameCar, char *temperature, char *pressure);
+void sniperModeAttack(char *id, char *nameCar);
 
 void enableSniperMode();
 void disableSniperMode() ;

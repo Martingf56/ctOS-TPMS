@@ -4,6 +4,18 @@
 #https://github.com/fphammerle/python-cc1101
 import cc1101 
 import sys #necessary for the arguments
+from bitarray import bitarray
+
+
+def convertToByte(frame):
+    #array_byte = []
+    #for byte in range(0, 200, 8):
+    #    print(frame[byte:(byte + 8)])
+    #    array_byte.append(int(frame[byte:byte+8], 2))
+
+    print(frame)
+    print(int(frame, 2))
+    return int(frame, 2).to_bytes(25, 'big')
 
 def configCC1101(transceiver):
     transceiver.set_base_frequency_hertz(433e6)
@@ -19,7 +31,9 @@ def transmitC1101(transceiver, frame):
 
 
 if __name__ == "__main__":
-    
+    #print(convertToByte("01010101010101010101010101010110101010011010010101101010011001101001100101101010010101010110100101100110101001101010101010101001011001011010011010011010101010011010010101101010100101100110101001111110"))
+    print(convertToByte(sys.argv[1]))
+    quit()
     with cc1101.CC1101() as transceiver:
         configCC1101(transceiver)
         #print("modulation format", transceiver.get_modulation_format().name)

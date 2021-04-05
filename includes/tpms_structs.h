@@ -18,6 +18,8 @@ struct tpms_general {
     int maybe_battery;
 };
 
+struct tpms_general newFakeSignal(char *id, char *nameCar);
+
 void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct);
 
 void parserElement(char *element, char *key, char *value);

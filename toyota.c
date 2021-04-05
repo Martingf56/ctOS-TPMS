@@ -1,7 +1,7 @@
 
 #include "includes/toyota.h"
 
-void toyotaTPMS(int status, char *id, float pressure, float temperature) {
+char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
 
     // full preamble is 0101 0101 0011 11 = 55 3c
     // could be shorter   11 0101 0011 11
@@ -59,4 +59,5 @@ void toyotaTPMS(int status, char *id, float pressure, float temperature) {
     strcat(finalCodifiedFrame, frameToModulate);
     strcat(finalCodifiedFrame, finaltrail);
     
+    return finalCodifiedFrame;
 }

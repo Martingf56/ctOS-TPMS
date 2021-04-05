@@ -20,4 +20,4 @@
 #define TEMPERATURE_OFFSET 40
 
 
-void toyotaTPMS(char *status, char *id, float pressure, float temperature);
+char* toyotaTPMS(int status, char *id, float pressure, float temperature);
