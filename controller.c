@@ -1,7 +1,7 @@
 #include "includes/controller.h"
 #include <signal.h>
 
-#include "gui.h"
+
 
 struct listOfSignals listOfSignals;
 int pidRTL;
@@ -73,7 +73,7 @@ void turnOff() {
 void refreshView() {
     char temperature[20], pressure[20];
 
-    SbListClear(List);
+    SbListClear(List_AO);
 
     int pos = listOfSignals.start;
     for(int i = 0; i < listOfSignals.size; i++){
@@ -84,7 +84,7 @@ void refreshView() {
         else {
             sprintf(temperature, "%f", listOfSignals.tpmsSignals[pos].signal.temperature_C);
             sprintf(pressure, "%f", listOfSignals.tpmsSignals[pos].signal.pressure_KPA);
-            SbListInsert(List,
+            SbListInsert(List_AO,
                             listOfSignals.tpmsSignals[pos].signal.id,
                             listOfSignals.tpmsSignals[pos].signal.model,
                             temperature,

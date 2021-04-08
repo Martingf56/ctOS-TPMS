@@ -11,6 +11,7 @@
 #endif
 
 #include "transmiter.h"
+#include "gui.h"
 
 #define MAX_SIGNALS 15
 #define MAX_TIME 30 //Max time for use a tpms signal
@@ -35,6 +36,8 @@ struct listOfSignals {
 void newlistOfSignals();
 
 void startGUI();
+
+bool launchAttack(struct tpms_general tpms);
 
 void sniperModeAttack(char *id, char *nameCar);
 
