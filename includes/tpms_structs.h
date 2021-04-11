@@ -18,12 +18,16 @@ struct tpms_general {
     int maybe_battery;
 };
 
+//Create a fake signal with a id and a name car 
 struct tpms_general newFakeSignal(char *id, char *nameCar);
 
+//Receive a key, value and a tpms struct, return the tpms struct with the value
 void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct);
 
+//Receive a string with format '"key" : "value",' and returns the key and value  strings separately
 void parserElement(char *element, char *key, char *value);
 
+//Receive a sting of a rtl signal and parse to a tpms struct
 struct tpms_general generalParser(char *signal);
 
 /*{

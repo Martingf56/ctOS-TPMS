@@ -19,5 +19,5 @@
 #define PRESSURE_OFFSET 7
 #define TEMPERATURE_OFFSET 40
 
-
+//Collect the params and create a toyota TPMS signal
 char* toyotaTPMS(int status, char *id, float pressure, float temperature);

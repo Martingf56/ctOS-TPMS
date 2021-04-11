@@ -1,7 +1,9 @@
 #include "includes/transmiter.h"
 
+//Return the emncode signal of the tpms struct
 char* encodeSignal(struct tpms_general tpms) {
 
+    //Compare with the vehicle name if is equal call his tpms generator signal and return on string the bits
     if (!strncmp(tpms.model, "Toyota", strlen("Toyota")))
         return toyotaTPMS(tpms.status, tpms.id, tpms.temperature_C, tpms.pressure_KPA);
     else if (!strncmp(tpms.model, "Citroen", strlen("Citrooen"))) 

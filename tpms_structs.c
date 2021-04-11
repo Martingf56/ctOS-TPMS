@@ -28,7 +28,7 @@ struct tpms_general newFakeSignal(char *id, char *nameCar) {
 }
 
 void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct) {
-
+    //Compare the key, if the key is equal assign the value to the tpms struct
     if(!strncmp(key, "model", strlen("model"))) {
         signalStruct->model = (char*)malloc(strlen(value));
         strcpy(signalStruct->model, value);
@@ -67,16 +67,16 @@ void parserElement(char *element, char *key, char *value) {
 
     int i = 0, cont_key = 0;
     while(i < strlen(element) && element[i] != ':') {
-        if(element[i] == '"') 
+        if(element[i] == '"') //Detect the first quotes
             open_quotes = !open_quotes;
         else  if(open_quotes)
-            key[cont_key++] = element[i];
+            key[cont_key++] = element[i];//Recolect the chars of the key
         
         i++;
     }
     cont_value = 0; i++; open_quotes = false;
     while (i < strlen(element)) {
-        if(element[i] == '"') {
+        if(element[i] == '"') {//Detect the first quotes
             if(!open_quotes) {
                 strcpy(value, "");
                 cont_value = 0;
@@ -84,7 +84,7 @@ void parserElement(char *element, char *key, char *value) {
             open_quotes = !open_quotes;
         }
         else
-            value[cont_value++] = element[i];
+            value[cont_value++] = element[i];//Recolect the chars of the value
 
         i++;
     }
@@ -97,13 +97,19 @@ struct tpms_general generalParser(char *signal) {
     char *signal_aux = (char*)malloc(strlen(signal));
 
     strcpy(signal_aux, signal);
-    element = strtok(signal_aux, ",");
+    element = strtok(signal_aux, ",");//Split the string
+    
     while (element != NULL) {
-        key = (char*)malloc(KEY_VALUE_SIZE); value = (char*)malloc(KEY_VALUE_SIZE);
-        parserElement(element, key, value);
-        assignValueStruct(key, value, &signalStruct);
-        element = strtok(NULL, ",");
-        free(key); free(value);
+        //Initialize the pointers
+        key = (char*)malloc(KEY_VALUE_SIZE); 
+        value = (char*)malloc(KEY_VALUE_SIZE);
+        
+        parserElement(element, key, value);//Parser one single element
+        assignValueStruct(key, value, &signalStruct);//Assign the value to the tpms struct
+        
+        element = strtok(NULL, ",");//Go to the next element
+        
+        free(key); free(value);//Liberate memory
     }
     
     free(signal_aux);

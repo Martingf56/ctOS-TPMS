@@ -22,23 +22,28 @@
 
 
 struct tpmsElement {
-   struct tpms_general signal;//Contiene informacion
-   time_t time; //Para saber cuanto lleva
+   struct tpms_general signal;//Contain the tpm information
+   time_t time; //Time for measure the duration on the list
 };
 
 struct listOfSignals {
-    struct tpmsElement tpmsSignals[MAX_SIGNALS]; //El array que se mostrará en la lista
+    struct tpmsElement tpmsSignals[MAX_SIGNALS]; //Array of tpms signals
+    //Pointer of circular array
     int start;
     int end;
     int size;
 };
 
+//Initialize the pointer of the circular array
 void newlistOfSignals();
 
+//Funcntion to call for init the GUI
 void startGUI();
 
+//Launch a tpms attack and return if was possible to launch
 bool launchAttack(struct tpms_general tpms);
 
+//Function for attack a single car, need the id of the wheel and the model of the vehicle
 void sniperModeAttack(char *id, char *nameCar);
 
 void enableSniperMode();
@@ -47,16 +52,24 @@ bool getSniperMode();
 void enableDisasterMode();
 void disableDisasterMode();
 bool getDisasterMode();
+
+//Kill the rtl 433 and not search more topms signals
 void killRTL433();
+
+//Quit the app
 void turnOff();
 
+//Refresh the view of the tpms list on the GUI
 void refreshView();
 
 struct tpmsElement newTpmsElement(struct tpms_general str);
 
+//Add signal to th circular array
 int addSignal(const struct tpms_general signal);
 
+//Start the rtl 433 on a different process
 int launchRTL433();
 
+//Principal function of the controller, is the main program
 void runController();
 

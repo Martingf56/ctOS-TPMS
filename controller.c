@@ -73,6 +73,7 @@ void turnOff() {
 void refreshView() {
     char temperature[20], pressure[20];
 
+    //Clear the list of vehicles
     SbListClear(List_AO);
 
     int pos = listOfSignals.start;
