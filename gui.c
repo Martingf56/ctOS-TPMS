@@ -1,6 +1,45 @@
 #include "includes/gui.h"
 #include "includes/controller.h"
 
+    GtkWidget    *ImageButtonBack;     //Image for the back button  
+    GtkWidget    *ButtonMainWindow;    //Back button
+
+    GtkWidget    *FrmPrincipal;     //Main window
+    GtkWidget    *LabelMainTitle;   //Label for main window
+    GtkWidget    *ButtonExit;       //Exit button
+    GtkWidget    *ButtonGo_AO;      //Button to go to _AO window
+    GtkWidget    *ButtonGo_AA;      //Button to go to _AA window
+    GtkWidget    *Layout;           //Layout for main window
+    GtkWidget    *BackgroundImage;  //Background image
+
+    GtkWidget    *LabelTitle_AO;  //Label for _AO window
+    GtkWidget    *LabelTitle_AA;  //Label for _AA window
+
+//widgets for attack one window 
+    GTimer       *Timer;
+    GtkWidget    *List_AO;              //List
+    GtkWidget    *EntryID_AO;           //Entry for id
+    GtkWidget    *LabelID_AO;           //Label for entry id
+    GtkWidget    *ComboboxModel_AO;     //Drop down list for car models
+    GtkWidget    *LabelModel_AO;        //Label for drop down list
+    GtkWidget    *EntryBox_AO;          //Container for LabelID_AO, EntryID_AO, ComboboxModel_AO and LabelModel_AO
+    GtkWidget    *ButtonPlay_AO;        //Button for attack
+    GtkWidget    *ScrolledWndow_AO;     //Scrolled window for the list
+    GtkTreeSelection *SelectionList_AO; //List selection
+    GtkWidget    *ListBox_AO;           //Container for scrolledwindow, EntryBox_AO and ButtonPlay_AO
+    GdkPixbufAnimation *Animation_AO;   //Animation for load a gif
+    GtkWidget    *ImageGif_AO;          //Image to display the animation
+    
+//widgets for attack all window
+    GtkWidget    *List_AA;              //List
+    GtkWidget    *ScrolledWndow_AA;     //Scrolled window for the list
+    GtkWidget    *ListBox_AA;           //Container for scrolledwindow and gif attacking
+    GtkWidget    *ButtonPlay_AA;        //Button for attack
+    GtkWidget    *ButtonStop_AA;        //Button for stop attack
+    GdkPixbufAnimation *Animation_AA;   //Animation for load a gif
+    GtkWidget    *ImageGif_AA;          //Image to display the animation
+    GtkWidget    *LabelImageGif_AA;     //Label for ImageGif_AA
+
 gboolean refreshTimer() {
     if(!getDisasterMode() && !getSniperMode())
         return false;

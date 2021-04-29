@@ -9,44 +9,44 @@
 #define REFRESH_VIEW 5
 #define GIF_TIME_ATTONE 3
 
-    GtkWidget    *ImageButtonBack;     //Image for the back button  
-    GtkWidget    *ButtonMainWindow;    //Back button
+    extern GtkWidget    *ImageButtonBack;     //Image for the back button  
+    extern GtkWidget    *ButtonMainWindow;    //Back button
 
-    GtkWidget    *FrmPrincipal;     //Main window
-    GtkWidget    *LabelMainTitle;   //Label for main window
-    GtkWidget    *ButtonExit;       //Exit button
-    GtkWidget    *ButtonGo_AO;      //Button to go to _AO window
-    GtkWidget    *ButtonGo_AA;      //Button to go to _AA window
-    GtkWidget    *Layout;           //Layout for main window
-    GtkWidget    *BackgroundImage;  //Background image
+    extern GtkWidget    *FrmPrincipal;     //Main window
+    extern GtkWidget    *LabelMainTitle;   //Label for main window
+    extern GtkWidget    *ButtonExit;       //Exit button
+    extern GtkWidget    *ButtonGo_AO;      //Button to go to _AO window
+    extern GtkWidget    *ButtonGo_AA;      //Button to go to _AA window
+    extern GtkWidget    *Layout;           //Layout for main window
+    extern GtkWidget    *BackgroundImage;  //Background image
 
-    GtkWidget    *LabelTitle_AO;  //Label for _AO window
-    GtkWidget    *LabelTitle_AA;  //Label for _AA window
+    extern GtkWidget    *LabelTitle_AO;  //Label for _AO window
+    extern GtkWidget    *LabelTitle_AA;  //Label for _AA window
 
 //widgets for attack one window 
-    GTimer       *Timer;
-    GtkWidget    *List_AO;              //List
-    GtkWidget    *EntryID_AO;           //Entry for id
-    GtkWidget    *LabelID_AO;           //Label for entry id
-    GtkWidget    *ComboboxModel_AO;     //Drop down list for car models
-    GtkWidget    *LabelModel_AO;        //Label for drop down list
-    GtkWidget    *EntryBox_AO;          //Container for LabelID_AO, EntryID_AO, ComboboxModel_AO and LabelModel_AO
-    GtkWidget    *ButtonPlay_AO;        //Button for attack
-    GtkWidget    *ScrolledWndow_AO;     //Scrolled window for the list
-    GtkTreeSelection *SelectionList_AO; //List selection
-    GtkWidget    *ListBox_AO;           //Container for scrolledwindow, EntryBox_AO and ButtonPlay_AO
-    GdkPixbufAnimation *Animation_AO;   //Animation for load a gif
-    GtkWidget    *ImageGif_AO;          //Image to display the animation
+    extern GTimer       *Timer;
+    extern GtkWidget    *List_AO;              //List
+    extern GtkWidget    *EntryID_AO;           //Entry for id
+    extern GtkWidget    *LabelID_AO;           //Label for entry id
+    extern GtkWidget    *ComboboxModel_AO;     //Drop down list for car models
+    extern GtkWidget    *LabelModel_AO;        //Label for drop down list
+    extern GtkWidget    *EntryBox_AO;          //Container for LabelID_AO, EntryID_AO, ComboboxModel_AO and LabelModel_AO
+    extern GtkWidget    *ButtonPlay_AO;        //Button for attack
+    extern GtkWidget    *ScrolledWndow_AO;     //Scrolled window for the list
+    extern GtkTreeSelection *SelectionList_AO; //List selection
+    extern GtkWidget    *ListBox_AO;           //Container for scrolledwindow, EntryBox_AO and ButtonPlay_AO
+    extern GdkPixbufAnimation *Animation_AO;   //Animation for load a gif
+    extern GtkWidget    *ImageGif_AO;          //Image to display the animation
     
 //widgets for attack all window
-    GtkWidget    *List_AA;              //List
-    GtkWidget    *ScrolledWndow_AA;     //Scrolled window for the list
-    GtkWidget    *ListBox_AA;           //Container for scrolledwindow and gif attacking
-    GtkWidget    *ButtonPlay_AA;        //Button for attack
-    GtkWidget    *ButtonStop_AA;        //Button for stop attack
-    GdkPixbufAnimation *Animation_AA;   //Animation for load a gif
-    GtkWidget    *ImageGif_AA;          //Image to display the animation
-    GtkWidget    *LabelImageGif_AA;     //Label for ImageGif_AA
+    extern GtkWidget    *List_AA;              //List
+    extern GtkWidget    *ScrolledWndow_AA;     //Scrolled window for the list
+    extern GtkWidget    *ListBox_AA;           //Container for scrolledwindow and gif attacking
+    extern GtkWidget    *ButtonPlay_AA;        //Button for attack
+    extern GtkWidget    *ButtonStop_AA;        //Button for stop attack
+    extern GdkPixbufAnimation *Animation_AA;   //Animation for load a gif
+    extern GtkWidget    *ImageGif_AA;          //Image to display the animation
+    extern GtkWidget    *LabelImageGif_AA;     //Label for ImageGif_AA
 
 
 gboolean refreshTimer();
