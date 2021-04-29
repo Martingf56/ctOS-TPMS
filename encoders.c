@@ -7,10 +7,10 @@ char* manchester_encoder(char* frame){
     int i;
     for(i = 0; i < strlen(frame); i++){/*According to IEEE 802.3*/
         if(frame[i] == '0'){
-            strcat(manchester_frame, "10");/*High-low transition in the middle of the interval*/
+            strcat(manchester_frame, "01");/*High-low transition in the middle of the interval*/
         }
         else{
-            strcat(manchester_frame, "01");/*Low-high transition in the middle of the interval*/
+            strcat(manchester_frame, "10");/*Low-high transition in the middle of the interval*/
         }
     }
     return manchester_frame;

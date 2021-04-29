@@ -1,6 +1,19 @@
 
 #include "includes/citroen.h"
 
+
+/*
+Packet nibbles:
+    UU  IIIIIIII FR  PP TT BB  CC
+- U = state, decoding unknown, not included in checksum
+- I = id
+- F = flags, (seen: 0: 69.4% 1: 0.8% 6: 0.4% 8: 1.1% b: 1.9% c: 25.8% e: 0.8%)
+- R = repeat counter (seen: 0,1,2,3)
+- P = Pressure (kPa in 1.364 steps, about fifth PSI?)
+- T = Temperature (deg C offset by 50)
+- B = Battery?
+- C = Checksum, XOR bytes 1 to 9 = 0
+*/
 char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, float temperature, int battery/*, char *filename*/){
 
     /*Preambulo: parte inicial de trama, indica el inicio de la comunicacion*/
