@@ -28,7 +28,8 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     char* systemID = dec2bin((long int)strtol(id, 0, 16), 32);
     char* systemFlags = dec2bin(flags, 4);
     char* systemRepeat = dec2bin(repeat, 4);
-    char* systemPressure = dec2bin((int)(pressure/PRESSURE_CONST), 8);
+    char* systemPressure = dec2bin((int)(pressure), 8);
+    //printf("%i", (int)(pressure/PRESSURE_CONST));
     char* systemTemperature = dec2bin((int)(temperature + TEMP_OFFSET), 8);
     char* systemBattery = dec2bin(battery, 8);
     
@@ -45,15 +46,16 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
 
     /*Conversion de caracter a digito*/
     
-    /*Calculo del checksum mediante la operacion xor entre elementos de la trama separados en grupos de 8 bits*/
+    /*Calculo del checksum mediante la operacion xor entre elementos de la trama separados 
+    en grupos de 8 bits sin tener en cuenta el state*/
     char* checksum = (char*)malloc(8);
-    strncpy(checksum, frame, 8);
-
+    strncpy(checksum, frame+8, 8);
+    
     char* groupBits = (char*)malloc(8);
 
     int i;
     int j = 0;
-    for(i = 8; i < strlen(frame); i++){
+    for(i = 16; i <= strlen(frame); i++){
         if (j == 8){
             checksum = xor(checksum, groupBits);
             j=0;
@@ -67,12 +69,13 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     strcpy(full_frame, frame);
     
     strcat(full_frame, checksum);
-    printf("%s %s\n", "Trama", full_frame);
+    //printf("%s %s\n", "Trama", full_frame);
 
     /*Codificacion de la señal en manchester*/
     char* manchester_frame = manchester_encoder(full_frame);
-    printf("%s %s\n", "Trama Manchester", manchester_frame);
-
+    //printf("%s\n%s\n", "Trama Manchester", manchester_frame);
+    //printf("%s\n%ld\n", "Tamaño total",strlen(manchester_frame));
+    
     /*Construccion de la trama codificada. El preambulo y el fin de la trama no se codifican*/
     char* finalCodifiedFrame = (char*)malloc(120);/*duda con el tamaño del preambulo*/
     strcpy(finalCodifiedFrame, preamble);
@@ -80,8 +83,8 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     strcat(finalCodifiedFrame, finaltrail);
 
     /*Escritura o devolucion de la señal*/
-    printf("%s\n%s\n", "Trama final",finalCodifiedFrame);
-    printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
+    //printf("%s\n%s\n", "Trama final",finalCodifiedFrame);
+    //printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
 
     return finalCodifiedFrame;
 }
