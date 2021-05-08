@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }*/
 
-    //struct tpms_general str = generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a2\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 242.792, \"temperature_C\" : 15.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}");
+    struct tpms_general str = generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"d2\", \"id\" : \"cafea1ba\", \"flags\" : 6, \"repeat\" : 3, \"pressure_kPa\" : 1, \"temperature_C\" : 0, \"maybe_battery\" : 16, \"mic\" : \"CHECKSUM\"}");
     
     //runController();
     //citroenTPMS("13", "8a58f9a2", 0x0, 1, 242.792, 15, 25);

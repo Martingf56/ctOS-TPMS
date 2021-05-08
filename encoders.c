@@ -5,12 +5,12 @@ char* manchester_encoder(char* frame){
     char* manchester_frame = (char*)malloc(strlen(frame) * 2);
     strcpy(manchester_frame, ""); /*initialize to empty*/
     int i;
-    for(i = 0; i < strlen(frame); i++){/*According to IEEE 802.3*/
+    for(i = 0; i < strlen(frame); i++){/*According to G.E. Thomas convention*/
         if(frame[i] == '0'){
-            strcat(manchester_frame, "01");/*High-low transition in the middle of the interval*/
+            strcat(manchester_frame, "01");/*Low-high transition in the middle of the interval*/
         }
         else{
-            strcat(manchester_frame, "10");/*Low-high transition in the middle of the interval*/
+            strcat(manchester_frame, "10");/*High-low transition in the middle of the interval*/
         }
     }
     return manchester_frame;
