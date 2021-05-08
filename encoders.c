@@ -22,12 +22,12 @@ char* differential_manchester_encoder(char* frame){
     int i;
     char* pattern;
     if(frame[0] == '0'){
-        strcat(differential_manchester_frame, "01");
-        pattern = "01";
-    }
-    else{
         strcat(differential_manchester_frame, "10");
         pattern = "10";
+    }
+    else{
+        strcat(differential_manchester_frame, "01");
+        pattern = "01";
     }
 
     for(i = 1; i < strlen(frame); i++){

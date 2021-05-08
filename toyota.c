@@ -20,6 +20,7 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     strncpy(lastSevenStatusBits, systemStatus + 1, 7);
 
     char *invertedPressure = xor(systemPressure, onesFilled);
+
     char *frame = (char *)malloc(64);
     strcpy(frame, systemID);
     strcat(frame, firstStatusBit);
@@ -27,18 +28,29 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     strcat(frame, systemTemperature);
     strcat(frame, lastSevenStatusBits);
     strcat(frame, invertedPressure);
-
+    printf("Trama: %s\n", frame);
 
     //crc step
-    uint8_t *crcFrame = (uint8_t *)malloc(strlen(frame));
-    for(int i = 0; i < strlen(frame); i++) { /*Convert the string to a uint8 array*/
-        crcFrame[i] = frame[i] - '0';
+    int offset = 0, len = 8;
+    char str[8];
+    uint8_t crcFrame[8]; 
+    for(int i = 0; i < 8; i++) {
+        strncpy(str, frame + offset, len);
+
+        crcFrame[i] = bin2dec(str, len);
+        /*bitsConvert += len;
+        if(strlen(frame) - bitsConvert < len) {
+            len = strlen(frame) - bitsConvert;
+        }*/
+        offset += len;
     }
+    //uint8_t crcFrame[] = {0xca,0xfe, 0xba, 0xbe, 0xde, 0x20, 0x80, 0x43};
     uint8_t crc = crc8(crcFrame, 8, 0x07, 0x80);//Calculate crc of the frame
 
     char *packetFormat = (char *)malloc(64+8);//Concatenate the frame with crc fo encode
     strcpy(packetFormat, frame);
     strcat(packetFormat, dec2bin(crc, 8));
+    printf("Trama + crc: %s\n", packetFormat);
 
     char *frameToModulate = differential_manchester_encoder(packetFormat);
 
@@ -48,16 +60,18 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
         lastBit[0] = '0';
     else
         lastBit[0] = '1';
+    printf("Trama Diferential Manchester: %s\n", frameToModulate);
 
-    char *finaltrail = (char *)malloc(3);
+
+    /*char *finaltrail = (char *)malloc(3);
     strcpy(finaltrail, lastBit);
     strcat(finaltrail, lastBit);
-    strcat(finaltrail, lastBit);
+    strcat(finaltrail, lastBit);*/
 
-    char *finalCodifiedFrame = (char *)malloc(90);
+   /* char *finalCodifiedFrame = (char *)malloc(90);
     strcpy(finalCodifiedFrame, preamble);
     strcat(finalCodifiedFrame, frameToModulate);
-    strcat(finalCodifiedFrame, finaltrail);
+    strcat(finalCodifiedFrame, finaltrail);*/
     
-    return finalCodifiedFrame;
+    return NULL;
 }
