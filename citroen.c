@@ -47,13 +47,13 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     
     /*Calculo del checksum mediante la operacion xor entre elementos de la trama separados en grupos de 8 bits*/
     char* checksum = (char*)malloc(8);
-    strncpy(checksum, frame, 8);
+    strncpy(checksum, frame + 8, 8);
 
     char* groupBits = (char*)malloc(8);
 
     int i;
     int j = 0;
-    for(i = 8; i < strlen(frame); i++){
+    for(i = 16; i <= strlen(frame); i++){
         if (j == 8){
             checksum = xor(checksum, groupBits);
             j=0;
