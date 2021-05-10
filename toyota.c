@@ -28,7 +28,8 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     strcat(frame, systemTemperature);
     strcat(frame, lastSevenStatusBits);
     strcat(frame, invertedPressure);
-    printf("Trama: %s\n", frame);
+    //printf("Trama: %s\n", frame);
+
 
     //crc step
     int offset = 0, len = 8;
@@ -50,9 +51,10 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     char *packetFormat = (char *)malloc(64+8);//Concatenate the frame with crc fo encode
     strcpy(packetFormat, frame);
     strcat(packetFormat, dec2bin(crc, 8));
-    printf("Trama + crc: %s\n", packetFormat);
+    //printf("Trama + crc: %s\n", packetFormat);
 
     char *frameToModulate = differential_manchester_encoder(packetFormat);
+
 
     char *lastBit = (char *)malloc(1);
     strncpy(lastBit, frameToModulate + strlen(frameToModulate) - 1, strlen(frameToModulate)); //obtain the last bit
@@ -60,18 +62,24 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
         lastBit[0] = '0';
     else
         lastBit[0] = '1';
-    printf("Trama Diferential Manchester: %s\n", frameToModulate);
+    //printf("Trama Diferential Manchester: %s\n\n", frameToModulate);
+    lastBit[1]= '\0';
 
 
-    /*char *finaltrail = (char *)malloc(3);
-    strcpy(finaltrail, lastBit);
+    char finaltrail[3];
+    strncpy(finaltrail, lastBit, 1);
     strcat(finaltrail, lastBit);
-    strcat(finaltrail, lastBit);*/
-
-   /* char *finalCodifiedFrame = (char *)malloc(90);
+    strcat(finaltrail, lastBit);
+    
+    char *finalCodifiedFrame = (char *)malloc(161);
     strcpy(finalCodifiedFrame, preamble);
     strcat(finalCodifiedFrame, frameToModulate);
-    strcat(finalCodifiedFrame, finaltrail);*/
+    strcat(finalCodifiedFrame, finaltrail);
+
+    /*Escritura o devolucion de la señal*/
+    //printf("%s\n%s\n", "Trama final",finalCodifiedFrame);
+    //printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));  
     
     return NULL;
+
 }

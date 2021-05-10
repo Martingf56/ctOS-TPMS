@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-//#include "includes/controller.h"
+#include "includes/controller.h"
 
 #include "includes/toyota.h"
 
@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }*/
 
-    struct tpms_general str = generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"d2\", \"id\" : \"cafea1ba\", \"flags\" : 6, \"repeat\" : 3, \"pressure_kPa\" : 1, \"temperature_C\" : 0, \"maybe_battery\" : 16, \"mic\" : \"CHECKSUM\"}");
-    
+    //struct tpms_general str = generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"d2\", \"id\" : \"cafea1ba\", \"flags\" : 6, \"repeat\" : 3, \"pressure_kPa\" : 1, \"temperature_C\" : 0, \"maybe_battery\" : 16, \"mic\" : \"CHECKSUM\"}");
+    struct tpms_general str = generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"cafebabe\",\"status\" : 128,\"pressure_kPa\" : 40,\"temperature_C\" : 25,\"mic\" : \"CRC\"}");
     //runController();
     //citroenTPMS("13", "8a58f9a2", 0x0, 1, 242.792, 15, 25);
     toyotaTPMS(128, "cafebabe",  40, 25);
