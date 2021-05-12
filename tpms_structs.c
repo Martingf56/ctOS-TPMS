@@ -10,7 +10,7 @@ struct tpms_general newFakeSignal(char *id, char *nameCar) {
 
     //Fake values
     tpms_signal.temperature_C = 0;
-    tpms_signal.pressure_KPA = 0;
+    tpms_signal.pressure_KPA = 1;
 
     //Constant values Toyota
     if(!strncmp(nameCar, "Toyota", strlen("Toyota"))){

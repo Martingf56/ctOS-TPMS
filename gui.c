@@ -182,7 +182,7 @@ void function_ButtonAttack(GtkWidget *widget){
     id = gtk_entry_get_text(GTK_ENTRY(EntryID_AO));
     model = gtk_combo_box_get_active_id(GTK_COMBO_BOX(ComboboxModel_AO));
 
-    //sniperModeAttack((char*)id, (char*)model); Need fix thing on gui for do this better
+    sniperModeAttack((char*)id, (char*)model); //Need fix thing on gui for do this better
 }
 
 void SbListChange(GtkWidget *widget){
@@ -310,7 +310,8 @@ void attOneWindow(){
 
     //Initialize the list
     SbListInit(List_AO, ScrolledWndow_AO);
-    SbListInsert(List_AO, "fb26ac5a", "Toyota", "15.000", "253.382");
+    SbListInsert(List_AO, "fb26ac5a", "Toyota", "14.000", "253.382");
+    SbListInsert(List_AO, "8a58f9a2", "Citroen", "15.000", "242.792");
 
     //Get the selection associated with the list
     SelectionList_AO = gtk_tree_view_get_selection(GTK_TREE_VIEW(List_AO));

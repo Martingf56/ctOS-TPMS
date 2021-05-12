@@ -29,8 +29,12 @@ bool launchAttack(struct tpms_general tpms) {
 
 void sniperModeAttack(char *id, char *nameCar) {
     struct tpms_general tpms = newFakeSignal(id, nameCar);
-
-    launchAttack(tpms);//if bad display problems on the transmit
+    if (!strncmp(tpms.model, "Toyota", strlen("Toyota")))
+        toyotaTPMS(tpms.status, tpms.id, tpms.pressure_KPA, tpms.temperature_C);
+    else if (!strncmp(tpms.model, "Citroen", strlen("Citroen"))) 
+        citroenTPMS(tpms.state, tpms.id, tpms.flags, tpms.repeat, tpms.pressure_KPA, tpms.temperature_C, tpms.maybe_battery);
+    
+    //launchAttack(tpms);//if bad display problems on the transmit
 }
 
 void enableSniperMode() {

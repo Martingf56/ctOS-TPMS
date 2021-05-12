@@ -22,7 +22,7 @@
 
 
 struct tpmsElement {
-   struct tpms_general signal;//Contain the tpm information
+   struct tpms_general signal;//Contain the tpms information
    time_t time; //Time for measure the duration on the list
 };
 

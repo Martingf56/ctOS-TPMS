@@ -48,10 +48,10 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     
     /*Calculo del checksum mediante la operacion xor entre elementos de la trama separados 
     en grupos de 8 bits sin tener en cuenta el state*/
-    char* checksum = (char*)malloc(8);
+    char* checksum = (char*)malloc(8+1);
     strncpy(checksum, frame + 8, 8);
 
-    char* groupBits = (char*)malloc(8);
+    char* groupBits = (char*)malloc(8+1);
 
     int i;
     int j = 0;
@@ -65,7 +65,7 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     }  
 
     /*Construccion de la trama final que deberemos modular*/
-    char* full_frame = (char*)malloc(80);  
+    char* full_frame = (char*)malloc(80+1);  
     strcpy(full_frame, frame);
     
     strcat(full_frame, checksum);
@@ -77,14 +77,21 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     //printf("%s\n%ld\n", "Tamaño total",strlen(manchester_frame));
     
     /*Construccion de la trama codificada. El preambulo y el fin de la trama no se codifican*/
-    char* finalCodifiedFrame = (char*)malloc(120);/*duda con el tamaño del preambulo*/
+    char* finalCodifiedFrame = (char*)malloc(200+1);/*duda con el tamaño del preambulo*/
     strcpy(finalCodifiedFrame, preamble);
     strcat(finalCodifiedFrame, manchester_frame);
     strcat(finalCodifiedFrame, finaltrail);
 
     /*Escritura o devolucion de la señal*/
-    //printf("%s\n%s\n", "Trama final",finalCodifiedFrame);
-    //printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
+    printf("%s\n%s\n", "Trama final Citroen",finalCodifiedFrame);
+    printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
 
     return finalCodifiedFrame;
 }
+
+/*
+Trama final Citroen D
+01010101010101010101010101010110010101100101101010010101100110010110011010010101101010101001011010011001010110010101010101010110010101010101011001011010010110010101101010010101100101010101101001111110
+Trama final Citroen I
+01010101010101010101010101010110010101100101101010010101100110010110011010010101101010101001011010011001010110010101010101010110010101010101011001011010010110010101101010010101100101010101101001111110
+*/

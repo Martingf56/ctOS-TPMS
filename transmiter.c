@@ -5,8 +5,8 @@ char* encodeSignal(struct tpms_general tpms) {
 
     //Compare with the vehicle name if is equal call his tpms generator signal and return on string the bits
     if (!strncmp(tpms.model, "Toyota", strlen("Toyota")))
-        return toyotaTPMS(tpms.status, tpms.id, tpms.temperature_C, tpms.pressure_KPA);
-    else if (!strncmp(tpms.model, "Citroen", strlen("Citrooen"))) 
+        return toyotaTPMS(tpms.status, tpms.id, tpms.pressure_KPA, tpms.temperature_C);
+    else if (!strncmp(tpms.model, "Citroen", strlen("Citroen"))) 
         return citroenTPMS(tpms.state, tpms.id, tpms.flags, tpms.repeat, tpms.pressure_KPA, tpms.temperature_C, tpms.maybe_battery);
 
     return NULL;
