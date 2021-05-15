@@ -43,8 +43,11 @@
 gboolean refreshTimer() {
     if(!getDisasterMode() && !getSniperMode())
         return false;
-    
-    refreshView();
+    if(getSniperMode()){
+        refreshView("AO");
+    }else if(getDisasterMode()){
+        refreshView("AA");
+    }
     return true;
 }
 
@@ -84,7 +87,7 @@ void show_attAll_widgets(GtkWidget *button){
     gtk_widget_show(LabelTitle_AA);
     gtk_widget_show(ListBox_AA);
 
-    enableSniperMode();
+    g_timeout_add_seconds(REFRESH_VIEW, refreshTimer, List_AA);
 }
 
 void go_main_window(GtkWidget *button){
@@ -181,7 +184,7 @@ void function_ButtonAttack(GtkWidget *widget){
     
     id = gtk_entry_get_text(GTK_ENTRY(EntryID_AO));
     model = gtk_combo_box_get_active_id(GTK_COMBO_BOX(ComboboxModel_AO));
-
+    //printf("%s\n", "ADIOOOOOOS");
     sniperModeAttack((char*)id, (char*)model); //Need fix thing on gui for do this better
 }
 
@@ -325,6 +328,8 @@ void attacking_all(GtkWidget *button){
     gtk_widget_show(ButtonStop_AA);
     gtk_widget_show(ImageGif_AA);
     gtk_widget_show(LabelImageGif_AA);
+
+    enableDisasterMode();
 }
 
 void stop_attacking_all(GtkWidget *button){
@@ -332,6 +337,8 @@ void stop_attacking_all(GtkWidget *button){
     gtk_widget_hide(ImageGif_AA);
     gtk_widget_hide(LabelImageGif_AA);
     gtk_widget_show(ButtonPlay_AA);
+
+    disableDisasterMode();
 }
 
 void attAllWindow(){

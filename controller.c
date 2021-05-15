@@ -4,6 +4,7 @@
 
 
 struct listOfSignals listOfSignals;
+struct listOfSignals listOfSignals_AA;
 int pidRTL;
 
 /*Bools of control*/
@@ -15,6 +16,10 @@ void newlistOfSignals() {
     listOfSignals.start = -1;
     listOfSignals.end = -1;
     listOfSignals.size = 0;
+
+    listOfSignals_AA.start = -1;
+    listOfSignals_AA.end = -1;
+    listOfSignals_AA.size = 0;
 }
 
 void startGUI() {
@@ -24,17 +29,20 @@ void startGUI() {
 }
 
 bool launchAttack(struct tpms_general tpms) {
-    return transmitTPMSSignal(tpms);
-}
-
-void sniperModeAttack(char *id, char *nameCar) {
-    struct tpms_general tpms = newFakeSignal(id, nameCar);
     if (!strncmp(tpms.model, "Toyota", strlen("Toyota")))
         toyotaTPMS(tpms.status, tpms.id, tpms.pressure_KPA, tpms.temperature_C);
     else if (!strncmp(tpms.model, "Citroen", strlen("Citroen"))) 
         citroenTPMS(tpms.state, tpms.id, tpms.flags, tpms.repeat, tpms.pressure_KPA, tpms.temperature_C, tpms.maybe_battery);
     
-    //launchAttack(tpms);//if bad display problems on the transmit
+    return NULL;
+    //return transmitTPMSSignal(tpms);
+}
+
+void sniperModeAttack(char *id, char *nameCar) {
+    struct tpms_general tpms = newFakeSignal(id, nameCar);
+    
+    
+    launchAttack(tpms);//if bad display problems on the transmit
 }
 
 void enableSniperMode() {
@@ -74,28 +82,43 @@ void turnOff() {
     killRTL433();
 }
 
-void refreshView() {
+void refreshView(const char *list) {
     char temperature[20], pressure[20];
 
     //Clear the list of vehicles
-    SbListClear(List_AO);
-
-    int pos = listOfSignals.start;
-    for(int i = 0; i < listOfSignals.size; i++){
-        if(difftime(time(NULL), listOfSignals.tpmsSignals[pos].time) >= MAX_TIME) {
-            listOfSignals.start = (listOfSignals.start + 1) % MAX_SIGNALS;
-            listOfSignals.size--;
+    
+    if (!strncmp(list, "AO", strlen("AO"))){
+        SbListClear(List_AO);
+        int pos = listOfSignals.start;
+        for(int i = 0; i < listOfSignals.size; i++){
+            if(difftime(time(NULL), listOfSignals.tpmsSignals[pos].time) >= MAX_TIME) {
+                listOfSignals.start = (listOfSignals.start + 1) % MAX_SIGNALS;
+                listOfSignals.size--;
+            }
+            else {
+                sprintf(temperature, "%f", listOfSignals.tpmsSignals[pos].signal.temperature_C);
+                sprintf(pressure, "%f", listOfSignals.tpmsSignals[pos].signal.pressure_KPA);
+                SbListInsert(List_AO,
+                                listOfSignals.tpmsSignals[pos].signal.id,
+                                listOfSignals.tpmsSignals[pos].signal.model,
+                                temperature,
+                                pressure);
+            }
+        pos = (pos+1) % MAX_SIGNALS;
         }
-        else {
-            sprintf(temperature, "%f", listOfSignals.tpmsSignals[pos].signal.temperature_C);
-            sprintf(pressure, "%f", listOfSignals.tpmsSignals[pos].signal.pressure_KPA);
-            SbListInsert(List_AO,
-                            listOfSignals.tpmsSignals[pos].signal.id,
-                            listOfSignals.tpmsSignals[pos].signal.model,
+    }
+    else if(!strncmp(list, "AA", strlen("AA"))){
+        SbListClear(List_AA);
+        for(int i = 0; i < listOfSignals_AA.size; i++){
+            sprintf(temperature, "%f", listOfSignals_AA.tpmsSignals[i].signal.temperature_C);
+            sprintf(pressure, "%f", listOfSignals_AA.tpmsSignals[i].signal.pressure_KPA);
+            SbListInsert(List_AA,
+                            listOfSignals_AA.tpmsSignals[i].signal.id,
+                            listOfSignals_AA.tpmsSignals[i].signal.model,
                             temperature,
                             pressure);
+        
         }
-      pos = (pos+1) % MAX_SIGNALS;
     }
    /* gtk_entry_set_text(GTK_ENTRY(EntryID), "");
     gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel), NULL);*/

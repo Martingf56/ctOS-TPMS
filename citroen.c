@@ -81,7 +81,7 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     strcpy(finalCodifiedFrame, preamble);
     strcat(finalCodifiedFrame, manchester_frame);
     strcat(finalCodifiedFrame, finaltrail);
-
+    finalCodifiedFrame[200]='\0';
     /*Escritura o devolucion de la señal*/
     printf("%s\n%s\n", "Trama final Citroen",finalCodifiedFrame);
     printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    

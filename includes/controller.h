@@ -60,7 +60,7 @@ void killRTL433();
 void turnOff();
 
 //Refresh the view of the tpms list on the GUI
-void refreshView();
+void refreshView(const char *list);
 
 struct tpmsElement newTpmsElement(struct tpms_general str);
 
