@@ -15,7 +15,7 @@ Packet nibbles:
 - C = Checksum, XOR bytes 1 to 9 = 0
 */
 char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, float temperature, int battery/*, char *filename*/){
-
+    int pressureDec;
     /*Preambulo: parte inicial de trama, indica el inicio de la comunicacion*/
     char* preamble = "01010101010101010101010101010110";
 
@@ -28,7 +28,7 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     char* systemID = dec2bin((long int)strtol(id, 0, 16), 32);
     char* systemFlags = dec2bin(flags, 4);
     char* systemRepeat = dec2bin(repeat, 4);
-    char* systemPressure = dec2bin((int)(pressure), 8);
+    char* systemPressure = dec2bin((int)round(pressure/PRESSURE_CONST), 8);
     //printf("%i", (int)(pressure/PRESSURE_CONST));
     char* systemTemperature = dec2bin((int)(temperature + TEMP_OFFSET), 8);
     char* systemBattery = dec2bin(battery, 8);

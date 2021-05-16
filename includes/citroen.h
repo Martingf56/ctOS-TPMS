@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #ifndef CONVERTER_H
 #define CONVERTER_H

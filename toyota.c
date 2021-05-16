@@ -90,7 +90,7 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     */
     printf("finaltrail: %s\n\n", finaltrail);
     
-    //char *finalCodifiedFrame = (char *)malloc(166);
+    //char *finalCodifiedFrame = (char *)malloc(162);
     char finalCodifiedFrame[162];
     strcpy(finalCodifiedFrame, preamble);
     strcat(finalCodifiedFrame, frameToModulate);
