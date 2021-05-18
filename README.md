@@ -41,7 +41,7 @@ Hacemos uso de la librería [python-cc1101](https://github.com/fphammerle/python
 
     $ pip install cc1101-python
     
-Para más información visitá el repositorio o en la página del proyecto en [PyPi](https://pypi.org/project/cc1101-python/).
+Para más información visita el repositorio o en la página del proyecto en [PyPi](https://pypi.org/project/cc1101-python/).
 
 #### ctOS
 Para compilar el programa haciendo uso del [MAKEFILE](/MAKEFILE).
