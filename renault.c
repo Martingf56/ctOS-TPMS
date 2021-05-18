@@ -97,6 +97,6 @@ char* renaultTPMS(char *id, float pressure, float temperature, int flags){
     printf("%s\n%s\n", "Trama final Renault",finalCodifiedFrame);
     printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
 
-    return NULL;
+    return finalCodifiedFrame;
 
 }

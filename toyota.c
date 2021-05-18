@@ -101,7 +101,7 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     printf("%s\n%s\n", "Trama final Toyota",finalCodifiedFrame);
     printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));  
     
-    return NULL;
+    return finalCodifiedFrame;
 
 }
 
