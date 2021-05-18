@@ -77,11 +77,11 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     //printf("%s\n%ld\n", "Tamaño total",strlen(manchester_frame));
     
     /*Construccion de la trama codificada. El preambulo y el fin de la trama no se codifican*/
-    char* finalCodifiedFrame = (char*)malloc(200+1);/*duda con el tamaño del preambulo*/
+    char* finalCodifiedFrame = (char*)malloc(200+1);
     strcpy(finalCodifiedFrame, preamble);
     strcat(finalCodifiedFrame, manchester_frame);
     strcat(finalCodifiedFrame, finaltrail);
-
+    finalCodifiedFrame[200]='\0';
     /*Escritura o devolucion de la señal*/
     printf("%s\n%s\n", "Trama final Citroen",finalCodifiedFrame);
     printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    

@@ -4,7 +4,7 @@
 
 
 #define num_columns 4   //Number of columns for list
-#define num_models 2    //Number of car models for drop down list
+#define num_models 3    //Number of car models for drop down list
 
 #define REFRESH_VIEW 5
 #define GIF_TIME_ATTONE 3

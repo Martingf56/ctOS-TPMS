@@ -9,13 +9,13 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
 
     /*Convert params data to binary*/
     char *systemStatus = dec2bin(status, 8);
-    printf("Status: %s\n", systemStatus);
+    //printf("Status: %s\n", systemStatus);
     char *systemID = dec2bin((long int)strtol(id, 0, 16), 32);
-    printf("ID: %s\n", systemID);
+    //printf("ID: %s\n", systemID);
     char *systemPressure = dec2bin((int)(PRESSURE_CONSTANT*(pressure + PRESSURE_OFFSET)), 8);
-    printf("Press: %s\n", systemPressure);
+    //printf("Press: %s\n", systemPressure);
     char *systemTemperature = dec2bin((int)(temperature + TEMPERATURE_OFFSET), 8);
-    printf("Temp: %s\n", systemTemperature);
+    //printf("Temp: %s\n", systemTemperature);
 
     char *onesFilled = "11111111";
     char *firstStatusBit = (char *)malloc(1+1);
@@ -34,8 +34,8 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     strcat(frame, systemTemperature);
     strcat(frame, lastSevenStatusBits);
     strcat(frame, invertedPressure);
-    printf("PressInv: %s\n", invertedPressure);
-    printf("Trama: %s\n", frame);
+    //printf("PressInv: %s\n", invertedPressure);
+    //printf("Trama: %s\n", frame);
 
 
     //crc step
@@ -59,8 +59,8 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     //char packetFormat[72];
     strcpy(packetFormat, frame);
     strcat(packetFormat, dec2bin(crc, 8));
-    printf("crc: %s\n", dec2bin(crc, 8));
-    printf("Trama + crc: %s\n", packetFormat);
+    //printf("crc: %s\n", dec2bin(crc, 8));
+    //printf("Trama + crc: %s\n", packetFormat);
 
     char *frameToModulate = differential_manchester_encoder(packetFormat);
 
@@ -73,9 +73,9 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
         strcpy(finaltrail, "000");
     else
         strcpy(finaltrail, "111");
-    printf("Trama Diferential Manchester: %s\n\n", frameToModulate);
+    //printf("Trama Diferential Manchester: %s\n\n", frameToModulate);
     //lastBit[1]= '\0';
-    printf("lastBit: %s\n\n", lastBit);
+    //printf("lastBit: %s\n\n", lastBit);
 
     
     
@@ -88,7 +88,7 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     strcat(finaltrail, lastBit);
     //finaltrail[3] = '\0';
     */
-    printf("finaltrail: %s\n\n", finaltrail);
+    //printf("finaltrail: %s\n\n", finaltrail);
     
     //char *finalCodifiedFrame = (char *)malloc(162);
     char finalCodifiedFrame[162];
@@ -96,10 +96,10 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     strcat(finalCodifiedFrame, frameToModulate);
     strcat(finalCodifiedFrame, finaltrail);
     //strcat(finalCodifiedFrame, '\0');
-    //finalCodifiedFrame[161]= '\0';
+    finalCodifiedFrame[161]= '\0';
     /*Escritura o devolucion de la señal*/
     printf("%s\n%s\n", "Trama final Toyota",finalCodifiedFrame);
-    //printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));  
+    printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));  
     
     return NULL;
 
