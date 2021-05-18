@@ -22,12 +22,12 @@ A la hora de enviar hacemos uso de un transceptor con el chip Ti CC1101. Este lo
 Para el correcto funcionamiento de la aplicación es necesario instalar varias herramientas de las que se hace uso durante la ejecución.
 
 #### GCC 
-Es necesario tener instalado GCC() para compilar el programa.
+Es necesario tener instalado GCC(GNU Compiler Collection) para compilar el programa.
 
     $ sudo apt-get install gcc
 
 #### Antena RTL-SDR
-Para instalar la antena RTL-SDR para poder recibir las señales. En nuestro caso hacemos uso de la antena RTL-SDR SMArt v4 que tiene su propio [manual de instalación](https://www.nooelec.com/store/downloads/dl/file/id/72/product/294/nesdr_installation_manual_for_ubuntu.pdf) que recomendamos seguir paso a paso.
+Es necesario instalar la antena RTL-SDR para poder recibir las señales TPMS. En nuestro caso hacemos uso de la antena RTL-SDR SMArt v4 que tiene su propio [manual de instalación](https://www.nooelec.com/store/downloads/dl/file/id/72/product/294/nesdr_installation_manual_for_ubuntu.pdf) que recomendamos seguir paso a paso.
 
 #### RTL-433
 Este es un proyecto para realizar la escucha de señales TPMS. 
