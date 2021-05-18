@@ -16,7 +16,7 @@ ${ROUTE_TX_TOOLS}tx_tools/build/code_gen -s 250k -r $FILE_IN -w $FILE_OUT
 ####
 
 ###Launch RTL_433
-rtl_433 -r $FILE_OUT
+rtl_433 -r $FILE_OUT -F json
 ####
 
 rm $FILE_IN $FILE_OUT
