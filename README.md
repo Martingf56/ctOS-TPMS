@@ -41,7 +41,7 @@ Hacemos uso de la librería [python-cc1101](https://github.com/fphammerle/python
 
     $ pip install cc1101-python
     
-Para más información visitá el repositorio o en la página del proyecto en [PyPi](https://pypi.org/project/cc1101-python/).
+Para más información puedes visitar el repositorio o la página del proyecto en [PyPi](https://pypi.org/project/cc1101-python/).
 
 #### ctOS
 Para compilar el programa haciendo uso del [MAKEFILE](/makefile).
@@ -59,7 +59,7 @@ Una vez generado el programa, se ejecuta como cualquier ejecutable en Linux.
 
     $ ./ctOS
     
- **Importante siempre ejecutarlo con la antena conectada**
+ **Importante siempre ejecutarlo con la antena conectada!!!!**
  
  Cuando se ejecute el archivo se abrirá la interfaz gráfica y la aplicación estará lista para usarla.
 
