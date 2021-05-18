@@ -207,6 +207,8 @@ void SbListChange(GtkWidget *widget){
 	        gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel_AO), "Toyota");
         }else if(g_strcmp0(value, "Citroen") == 0){
             gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel_AO), "Citroen");
+        }else if(g_strcmp0(value, "Renault") == 0){
+            gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel_AO), "Renault");
         }
         
         g_signal_connect(ButtonPlay_AO, "clicked", G_CALLBACK(function_ButtonAttack), NULL);
@@ -243,7 +245,7 @@ void gturnOff() {
 
 
 void attOneWindow(){
-    const gchar *model_names[num_models] = {"Toyota", "Citroen"};
+    const gchar *model_names[num_models] = {"Toyota", "Citroen", "Renault"};
 
     LabelTitle_AO = gtk_label_new("Attack One");
     gtk_layout_put(GTK_LAYOUT(Layout), LabelTitle_AO, 160, 60);
@@ -315,6 +317,7 @@ void attOneWindow(){
     SbListInit(List_AO, ScrolledWndow_AO);
     SbListInsert(List_AO, "fb26ac5a", "Toyota", "14.000", "253.382");
     SbListInsert(List_AO, "8a58f9a2", "Citroen", "15.000", "242.792");
+    SbListInsert(List_AO, "87f293", "Renault", "25.000", "202.5");
 
     //Get the selection associated with the list
     SelectionList_AO = gtk_tree_view_get_selection(GTK_TREE_VIEW(List_AO));

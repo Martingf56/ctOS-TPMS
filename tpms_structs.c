@@ -24,6 +24,11 @@ struct tpms_general newFakeSignal(char *id, char *nameCar) {
         tpms_signal.maybe_battery = 56;
     }
 
+    //Constant values Renault
+    if(!strncmp(nameCar, "Renault", strlen("Renault"))){
+        tpms_signal.flags = 34;
+    }
+
     return tpms_signal;
 }
 

@@ -33,6 +33,8 @@ bool launchAttack(struct tpms_general tpms) {
         toyotaTPMS(tpms.status, tpms.id, tpms.pressure_KPA, tpms.temperature_C);
     else if (!strncmp(tpms.model, "Citroen", strlen("Citroen"))) 
         citroenTPMS(tpms.state, tpms.id, tpms.flags, tpms.repeat, tpms.pressure_KPA, tpms.temperature_C, tpms.maybe_battery);
+    else if (!strncmp(tpms.model, "Renault", strlen("Renault"))) 
+        renaultTPMS(tpms.id, tpms.pressure_KPA, tpms.temperature_C, tpms.flags);
     
     return NULL;
     //return transmitTPMSSignal(tpms);
