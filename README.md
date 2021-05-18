@@ -34,7 +34,7 @@ Este es un proyecto para realizar la escucha de señales TPMS.
 
     $ sudo apt-get install rtl_433 
 
-Para mayo información consultar el [repositorio](https://github.com/merbanan/rtl_433).
+Para mayor información consultar el [repositorio](https://github.com/merbanan/rtl_433).
 
 #### Python CC1101
 Hacemos uso de la librería [python-cc1101](https://github.com/fphammerle/python-cc1101) para conectarse al chip y transmitir una señal.
