@@ -29,6 +29,7 @@
     GtkWidget    *ListBox_AO;           //Container for scrolledwindow, EntryBox_AO and ButtonPlay_AO
     GdkPixbufAnimation *Animation_AO;   //Animation for load a gif
     GtkWidget    *ImageGif_AO;          //Image to display the animation
+    gint handler_id;
     
 //widgets for attack all window
     GtkWidget    *List_AA;              //List
@@ -185,6 +186,7 @@ void function_ButtonAttack(GtkWidget *widget){
     id = gtk_entry_get_text(GTK_ENTRY(EntryID_AO));
     model = gtk_combo_box_get_active_id(GTK_COMBO_BOX(ComboboxModel_AO));
     //printf("%s\n", "ADIOOOOOOS");
+    
     sniperModeAttack((char*)id, (char*)model); //Need fix thing on gui for do this better
 }
 
@@ -211,7 +213,7 @@ void SbListChange(GtkWidget *widget){
             gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel_AO), "Renault");
         }
         
-        g_signal_connect(ButtonPlay_AO, "clicked", G_CALLBACK(function_ButtonAttack), NULL);
+        
 
         g_free(value);
     }
@@ -323,6 +325,11 @@ void attOneWindow(){
     SelectionList_AO = gtk_tree_view_get_selection(GTK_TREE_VIEW(List_AO));
     
     g_signal_connect(SelectionList_AO, "changed", G_CALLBACK(SbListChange), NULL);
+    //if(){
+        handler_id = g_signal_connect(ButtonPlay_AO, "clicked", G_CALLBACK(function_ButtonAttack), NULL);
+    //}else{
+        //  g_signal_handler_disconnect(ButtonPlay_AO, handler_id);
+    //}
     
 }
 

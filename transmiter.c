@@ -8,6 +8,8 @@ char* encodeSignal(struct tpms_general tpms) {
         return toyotaTPMS(tpms.status, tpms.id, tpms.pressure_KPA, tpms.temperature_C);
     else if (!strncmp(tpms.model, "Citroen", strlen("Citroen"))) 
         return citroenTPMS(tpms.state, tpms.id, tpms.flags, tpms.repeat, tpms.pressure_KPA, tpms.temperature_C, tpms.maybe_battery);
+    else if (!strncmp(tpms.model, "Renault", strlen("Renault"))) 
+        return renaultTPMS(tpms.id, tpms.pressure_KPA, tpms.temperature_C, tpms.flags);
 
     return NULL;
 }
