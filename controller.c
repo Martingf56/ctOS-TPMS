@@ -165,7 +165,7 @@ int launchRTL433() {
 
     pidFork = fork();
     if(pidFork == 0) {//child process
-        char *args[] = {"sh", "-c", "rtl_433 -C si -F json -R 82 -R 88", NULL};
+        char *args[] = {"sh", "-c", "rtl_433 -C si -F json -R 82 -R 88 -R 90", NULL};
         
         close(fd_pipe[READ_END]);
         dup2(fd_pipe[WRITE_END], STDOUT_FILENO);
