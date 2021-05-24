@@ -34,9 +34,9 @@ char* renaultTPMS(char *id, float pressure, float temperature, int flags){
     
     
     char systemIDLittleEndian[25];
-    strcpy(systemIDLittleEndian, idRight);
-    strcat(systemIDLittleEndian, idMid);
-    strcat(systemIDLittleEndian, idLeft);
+    strncpy(systemIDLittleEndian, idRight, 8);
+    strncat(systemIDLittleEndian, idMid, 8);
+    strncat(systemIDLittleEndian, idLeft, 8);
     systemIDLittleEndian[24] = '\0';
     //printf("IDLE: %s\n", systemIDLittleEndian);
 
@@ -78,7 +78,7 @@ char* renaultTPMS(char *id, float pressure, float temperature, int flags){
 
     char full_frame[73];//Concatenate the frame with crc fo encode
     //char packetFormat[72];
-    strcpy(full_frame, frame);
+    strncpy(full_frame, frame, 64);
     strcat(full_frame, dec2bin(crc, 8));
     //printf("crc: %s\n", dec2bin(crc, 8));
     full_frame[72] = '\0';
@@ -91,7 +91,7 @@ char* renaultTPMS(char *id, float pressure, float temperature, int flags){
 
     char* finalCodifiedFrame = (char*)malloc(200+1);
     strcpy(finalCodifiedFrame, preamble);
-    strcat(finalCodifiedFrame, manchester_frame);
+    strncat(finalCodifiedFrame, manchester_frame, 72);
     strcat(finalCodifiedFrame, finaltrail);
     finalCodifiedFrame[200]='\0';
     /*Escritura o devolucion de la señal*/
