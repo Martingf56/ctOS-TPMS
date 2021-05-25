@@ -6,11 +6,11 @@ import cc1101
 import sys #necessary for the arguments
 import time
 import logging
+import binascii
 
 
-def convertToByte(frame):
-    print(int(frame, 2))
-    return int(frame, 2).to_bytes(25, 'big')
+def convertToByte(frame, lenPayload):
+    return int(frame,2).to_bytes(lenPayload, 'big')
 
 def configCC1101(transceiver):
     transceiver.set_base_frequency_hertz(433e6)
@@ -28,8 +28,14 @@ def transmitC1101(transceiver, frame):
 
 
 if __name__ == "__main__":
+    quit()
     logging.basicConfig(level=logging.INFO)
-    
+    lenPayload = len(sys.argv[1]) / 8
+    lenPayload += lenPayload % 8 != 0
+    lenPayload = int(lenPayload)
+    print(lenPayload)
+    convertToByte(sys.argv[1], lenPayload)
+    quit()
     with cc1101.CC1101() as transceiver:
         configCC1101(transceiver)
         transmitC1101(transceiver, sys.argv[0].encode())#We need convert the frame to a bytes array
