@@ -153,7 +153,25 @@ int addSignal(const struct tpms_general signal) {
     return 1;
 }
 
+int addSignalAll(const struct tpms_general signal) {
+    if (signal.id == NULL)
+        return -1;
 
+    //Pointers of circular array
+    listOfSignals_AA.end = (listOfSignals_AA.end + 1) % MAX_SIGNALS;
+
+    listOfSignals_AA.tpmsSignals[listOfSignals_AA.end] = newTpmsElement(signal);
+    listOfSignals_AA.size++;
+    if(listOfSignals_AA.size > MAX_SIGNALS)
+        listOfSignals_AA.size = MAX_SIGNALS;
+    
+    listOfSignals_AA.start += listOfSignals_AA.start == listOfSignals_AA.end;
+    if(listOfSignals_AA.start == -1)
+        listOfSignals_AA.start = 0;
+    listOfSignals_AA.start %= MAX_SIGNALS;
+
+    return 1;
+}
 
 int launchRTL433() {
     int pidFork, fd_pipe[2];
@@ -243,7 +261,7 @@ void runController() {
                     
                     if(disasterMode) {
                         launchAttack(str);
-                        addSignal(str);
+                        addSignalAll(str);
                     }
                     else if(sniperMode){
                         addSignal(str);

@@ -66,6 +66,8 @@ struct tpmsElement newTpmsElement(struct tpms_general str);
 
 //Add signal to th circular array
 int addSignal(const struct tpms_general signal);
+// Add siganl to the attack all circular array
+int addSignalAll(const struct tpms_general signal);
 
 //Start the rtl 433 on a different process
 int launchRTL433();
