@@ -2,7 +2,7 @@
 #include "includes/encoders.h"
 
 char* manchester_encoder(char* frame){
-    char* manchester_frame = (char*)malloc(strlen(frame) * 2);
+    char* manchester_frame = (char*)malloc((strlen(frame) * 2)+1);
     strcpy(manchester_frame, ""); /*initialize to empty*/
     int i;
     for(i = 0; i < strlen(frame); i++){/*According to G.E. Thomas convention*/
@@ -17,7 +17,7 @@ char* manchester_encoder(char* frame){
 }
 
 char* differential_manchester_encoder(char* frame){
-    char* differential_manchester_frame = (char*)malloc(strlen(frame) * 2);
+    char* differential_manchester_frame = (char*)malloc((strlen(frame) * 2)+1);
     strcpy(differential_manchester_frame, ""); /*initialize to empty to be able to concatenate*/
     int i;
     char* lastBit = "1";

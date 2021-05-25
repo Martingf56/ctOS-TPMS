@@ -32,7 +32,7 @@ char* toyotaTPMS(int status, char *id, float pressure, float temperature) {
     strcat(frame, firstStatusBit);
     strcat(frame, systemPressure);
     strcat(frame, systemTemperature);
-    strcat(frame, lastSevenStatusBits);
+    strncat(frame, lastSevenStatusBits, 7);
     strcat(frame, invertedPressure);
     //printf("PressInv: %s\n", invertedPressure);
     //printf("Trama: %s\n", frame);

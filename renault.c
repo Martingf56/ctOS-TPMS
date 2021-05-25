@@ -15,29 +15,39 @@ char* renaultTPMS(char *id, float pressure, float temperature, int flags){
     
     char *preamble = "01010101010101010101010101010110";
     char* finaltrail = "0000";
+    char* unknown = "1111111111111111";
+    //unknown[16] = '\0';
+    
 
     char flagsStr[2];
     sprintf(flagsStr, "%d", flags); 
 
-    char idLeft[9], idMid[9], idRight[9];
 
     /*Convert params data to binary*/
     char *systemID = dec2bin((long int)strtol(id, 0, 16), 24);
     //printf("ID: %s\n", systemID);
-
+    char* idLeft = (char*)malloc(8+1);
     strncpy(idLeft, systemID, 8);
     idLeft[8] = '\0';
+    char* idMid = (char*)malloc(8+1);
     strncpy(idMid, systemID+8, 8);
     idMid[8] = '\0';
+    char* idRight = (char*)malloc(8+1);
     strncpy(idRight, systemID+16, 8);
     idRight[8] = '\0';
+    //printf("IDLEFT: %s\n", idLeft);
+    //printf("IDMID: %s\n", idMid);
+    //printf("IDRIGHT: %s\n", idRight);
     
     
-    char systemIDLittleEndian[25];
-    strncpy(systemIDLittleEndian, idRight, 8);
+    char* systemIDLittleEndian = (char*)malloc(24+1);
+    strcpy(systemIDLittleEndian, idRight);
+    //printf("IDLE1: %s\n", systemIDLittleEndian);
     strncat(systemIDLittleEndian, idMid, 8);
+    //printf("IDLE2: %s\n", systemIDLittleEndian);
     strncat(systemIDLittleEndian, idLeft, 8);
-    systemIDLittleEndian[24] = '\0';
+    //printf("IDLE3: %s\n", systemIDLittleEndian);
+    //systemIDLittleEndian[24] = '\0';
     //printf("IDLE: %s\n", systemIDLittleEndian);
 
     char *systemPressure = dec2bin((int)(pressure/PRESSURE_CONSTANT_RENAULT), 10);
@@ -46,17 +56,17 @@ char* renaultTPMS(char *id, float pressure, float temperature, int flags){
     //printf("Temp: %s\n", systemTemperature);
     char* systemFlags = dec2bin((long int)strtol(flagsStr, 0, 16), 6);
     //printf("Flags: %s\n", systemFlags);
-    char *unknown = "1111111111111111";
+    
     //printf("Unknown: %s\n", unknown);
 
-    char frame[65];
+    char* frame = (char*)malloc(64+1);
     //char frame[64];
     strcpy(frame, systemFlags);
     strcat(frame, systemPressure);
     strcat(frame, systemTemperature);
     strcat(frame, systemIDLittleEndian);
     strcat(frame, unknown);
-    frame[64] = '\0';
+    //frame[64] = '\0';
     //printf("Trama: %s\n", frame);
     
     //crc step
@@ -75,13 +85,13 @@ char* renaultTPMS(char *id, float pressure, float temperature, int flags){
     }
     //uint8_t crcFrame[] = {0xca,0xfe, 0xba, 0xbe, 0xde, 0x20, 0x80, 0x43};
     uint8_t crc = crc8(crcFrame, 8, 0x07, 0x00);//Calculate crc of the frame
-
-    char full_frame[73];//Concatenate the frame with crc fo encode
+    
+    char* full_frame = (char*)malloc(64+8+1);//Concatenate the frame with crc fo encode
     //char packetFormat[72];
-    strncpy(full_frame, frame, 64);
+    strcpy(full_frame, frame);
     strcat(full_frame, dec2bin(crc, 8));
     //printf("crc: %s\n", dec2bin(crc, 8));
-    full_frame[72] = '\0';
+    //full_frame[72] = '\0';
     //printf("Trama + crc: %s\n", full_frame);
     //printf("%s\n%ld\n", "Tamaño total",strlen(full_frame));
 
@@ -89,11 +99,11 @@ char* renaultTPMS(char *id, float pressure, float temperature, int flags){
     //printf("%s\n%s\n", "Trama Manchester", manchester_frame);
     //printf("%s\n%ld\n", "Tamaño total",strlen(manchester_frame));
 
-    char* finalCodifiedFrame = (char*)malloc(200+1);
+    char* finalCodifiedFrame = (char*)malloc(180+1);
     strcpy(finalCodifiedFrame, preamble);
-    strncat(finalCodifiedFrame, manchester_frame, 72);
+    strncat(finalCodifiedFrame, manchester_frame, 144);
     strcat(finalCodifiedFrame, finaltrail);
-    finalCodifiedFrame[200]='\0';
+    finalCodifiedFrame[180]='\0';
     /*Escritura o devolucion de la señal*/
     printf("%s\n%s\n", "Trama final Renault",finalCodifiedFrame);
     printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
