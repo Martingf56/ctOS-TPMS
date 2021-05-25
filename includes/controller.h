@@ -15,7 +15,7 @@
 
 #define MAX_SIGNALS 15
 #define MAX_TIME 30 //Max time for use a tpms signal
-#define BUFFER_SIZE 1 //For read rtl
+#define BUFFER_SIZE 10 //For read rtl
 #define PIPE 2 //PIPE
 #define READ_END 0  //PIPE
 #define WRITE_END 1 //PIPE

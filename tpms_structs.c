@@ -112,6 +112,7 @@ struct tpms_general generalParser(char *signal) {
         //Initialize the pointers
         key = (char*)malloc(KEY_VALUE_SIZE); 
         value = (char*)malloc(KEY_VALUE_SIZE);
+        strncpy(key, "", KEY_VALUE_SIZE); strncpy(value, "", KEY_VALUE_SIZE); 
         
         parserElement(element, key, value);//Parser one single element
         assignValueStruct(key, value, &signalStruct);//Assign the value to the tpms struct

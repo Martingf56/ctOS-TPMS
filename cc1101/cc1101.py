@@ -28,16 +28,14 @@ def transmitC1101(transceiver, frame):
 
 
 if __name__ == "__main__":
-    quit()
     logging.basicConfig(level=logging.INFO)
+    
     lenPayload = len(sys.argv[1]) / 8
     lenPayload += lenPayload % 8 != 0
     lenPayload = int(lenPayload)
-    print(lenPayload)
-    convertToByte(sys.argv[1], lenPayload)
-    quit()
+    
     with cc1101.CC1101() as transceiver:
         configCC1101(transceiver)
-        transmitC1101(transceiver, sys.argv[0].encode())#We need convert the frame to a bytes array
+        transmitC1101(transceiver, convertToByte(sys.argv[1]))#We need convert the frame to a bytes array
     pass
 
