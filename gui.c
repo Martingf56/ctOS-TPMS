@@ -349,6 +349,7 @@ void stop_attacking_all(GtkWidget *button){
     gtk_widget_show(ButtonPlay_AA);
 
     disableDisasterMode();
+    killRTL433();
 }
 
 void attAllWindow(){

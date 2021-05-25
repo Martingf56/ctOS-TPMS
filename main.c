@@ -31,11 +31,12 @@ int main(int argc, char *argv[]) {
     //citroenTPMS(str.state, str.id, str.flags, str.repeat, 1, 0, str.maybe_battery);
     /*citroenTPMS("13", "8a58f9a2", 0, 1, 1, 0, 56);
     toyotaTPMS(131, "fb26ac5a",  1, 0);
-    renaultTPMS("87f293", 1, 0, 34);
     */
-    //renaultTPMS("87f293", 1, 0, 34);
-    //toyotaTPMS(str.status, str.id,  1, 0);
-    /*str = generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a2\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 242.792, \"temperature_C\" : 15.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}");
+    /*renaultTPMS("87f293", 1, 0, 34);
+    
+    renaultTPMS("87f293", 1, 0, 34);
+    toyotaTPMS(str.status, str.id,  1, 0);
+    str = generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a2\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 242.792, \"temperature_C\" : 15.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}");
     citroenTPMS(str.state, str.id, str.flags, str.repeat, 1, 0, str.maybe_battery);
     renaultTPMS("87f293", 1, 0, 34);
     */
