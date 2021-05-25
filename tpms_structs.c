@@ -35,19 +35,23 @@ struct tpms_general newFakeSignal(char *id, char *nameCar) {
 void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct) {
     //Compare the key, if the key is equal assign the value to the tpms struct
     if(!strncmp(key, "model", strlen("model"))) {
-        signalStruct->model = (char*)malloc(strlen(value));
-        strcpy(signalStruct->model, value);
+        //printf("%s %ld\n", value, strlen(value));
+        signalStruct->model = (char*)malloc((strlen(value))+1);
+        strncpy(signalStruct->model, value, strlen(value));
+        signalStruct->model[strlen(value)] = '\0';
+        
     }
     else if(!strncmp(key, "time", strlen("time"))) {
-        signalStruct->time = (char*)malloc(strlen(value));
+        //printf("%s %ld\n", value, strlen(value));
+        signalStruct->time = (char*)malloc((strlen(value))+1);
         strcpy(signalStruct->time, value);
     }
     else if(!strncmp(key, "state", strlen("state"))) {
-        signalStruct->state = (char*)malloc(strlen(value));
+        signalStruct->state = (char*)malloc((strlen(value))+1);
         strcpy(signalStruct->state, value);
     }
     else if(!strncmp(key, "id", strlen("id"))) {
-        signalStruct->id = (char*)malloc(strlen(value));
+        signalStruct->id = (char*)malloc((strlen(value))+1);
         strcpy(signalStruct->id, value);
     }
     else if(!strncmp(key, "status", strlen("status"))) 
@@ -99,7 +103,7 @@ void parserElement(char *element, char *key, char *value) {
 struct tpms_general generalParser(char *signal) {
     char *element, *key ,*value;
     struct tpms_general signalStruct;
-    char *signal_aux = (char*)malloc(strlen(signal));
+    char *signal_aux = (char*)malloc((strlen(signal))+1);
 
     strcpy(signal_aux, signal);
     element = strtok(signal_aux, ",");//Split the string

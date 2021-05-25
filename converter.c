@@ -2,7 +2,7 @@
 
 char* dec2bin(long int c, int len) {
     int i;
-    char* ret = (char*)malloc(len);
+    char* ret = (char*)malloc(len+1);
     strcpy(ret, "");
     for(i = len-1; i >= 0; i--){
         
@@ -30,7 +30,7 @@ int bin2dec(char *bin, int len){
 
 char* xor(char* check, char* next8bits) {
     int i;
-    char* ret = (char*)malloc(8);
+    char* ret = (char*)malloc(8+1);
     strcpy(ret, "");
     for(i = 0; i < 8; i++){
         if(check[i] == next8bits[i]){
