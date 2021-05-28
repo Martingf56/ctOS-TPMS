@@ -35,14 +35,10 @@ struct tpms_general newFakeSignal(char *id, char *nameCar) {
 void assignValueStruct(const char *key, const char *value, struct tpms_general *signalStruct) {
     //Compare the key, if the key is equal assign the value to the tpms struct
     if(!strncmp(key, "model", strlen("model"))) {
-        //printf("%s %ld\n", value, strlen(value));
         signalStruct->model = (char*)malloc((strlen(value))+1);
         strncpy(signalStruct->model, value, strlen(value));
-        signalStruct->model[strlen(value)] = '\0';
-        
     }
     else if(!strncmp(key, "time", strlen("time"))) {
-        //printf("%s %ld\n", value, strlen(value));
         signalStruct->time = (char*)malloc((strlen(value))+1);
         strcpy(signalStruct->time, value);
     }
