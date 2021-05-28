@@ -29,7 +29,7 @@ bool transmitTPMSSignal(struct tpms_general tpms) {
         close(pipe_fd[0]);
 
         //Execute the program
-        if(execlp("python3", "python3", "./cc1101/cc1101.py", buff, NULL) == -1) {
+        if(execlp("python3", "python3", "./cc1101/transmitCC1101.py", buff, NULL) == -1) {
             exit(-1);
         }
     }

