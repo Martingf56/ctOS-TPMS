@@ -39,7 +39,7 @@ bool transmitTPMSSignal(struct tpms_general tpms) {
 
         write(pipe_fd[1], encodeSignal(tpms), PIPE_BUFF_SIZE);//Send the dignal to the child
         
-        while((ret = wait(&status)) > 0); //Wait for the child process
+        wait(&status); //Wait for the child process
 
         close(pipe_fd[1]); //Close write side
 
