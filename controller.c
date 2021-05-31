@@ -1,9 +1,10 @@
 #include "includes/controller.h"
 #include <signal.h>
 
-#include "gui.h"
+
 
 struct listOfSignals listOfSignals;
+struct listOfSignals listOfSignals_AA;
 int pidRTL;
 
 /*Bools of control*/
@@ -15,6 +16,10 @@ void newlistOfSignals() {
     listOfSignals.start = -1;
     listOfSignals.end = -1;
     listOfSignals.size = 0;
+
+    listOfSignals_AA.start = -1;
+    listOfSignals_AA.end = -1;
+    listOfSignals_AA.size = 0;
 }
 
 void startGUI() {
@@ -23,12 +28,15 @@ void startGUI() {
     //Launch UI
 }
 
-void sniperModeAttack(char *id, char *nameCar, char *temperature, char *pressure) {
-    /*
-    Si es toyota
-        lanzo ataque toyota
-    Si es citroen ataque citroen
-    */
+bool launchAttack(struct tpms_general tpms) {
+    return transmitTPMSSignal(tpms);
+}
+
+void sniperModeAttack(char *id, char *nameCar) {
+    struct tpms_general tpms = newFakeSignal(id, nameCar);
+    
+    
+    launchAttack(tpms);//if bad display problems on the transmit
 }
 
 void enableSniperMode() {
@@ -68,28 +76,46 @@ void turnOff() {
     killRTL433();
 }
 
-void refreshView() {
+void refreshView(const char *list) {
     char temperature[20], pressure[20];
-    SbListClear(List);
-    //if(listOfSignals.start == -1) return;
-    int pos = listOfSignals.start;
-    for(int i = 0; i < listOfSignals.size; i++){
-        if(difftime(time(NULL), listOfSignals.tpmsSignals[pos].time) >= MAX_TIME) {
-            listOfSignals.start = (listOfSignals.start + 1) % MAX_SIGNALS;
-            listOfSignals.size--;
-        }
-        else {
 
-            sprintf(temperature, "%f", listOfSignals.tpmsSignals[pos].signal.temperature_C);
-            sprintf(pressure, "%f", listOfSignals.tpmsSignals[pos].signal.pressure_KPA);
-            SbListInsert(List,
-                            listOfSignals.tpmsSignals[pos].signal.id,
-                            listOfSignals.tpmsSignals[pos].signal.model,
+    //Clear the list of vehicles
+    
+    if (!strncmp(list, "AO", strlen("AO"))){
+        SbListClear(List_AO);
+        int pos = listOfSignals.start;
+        for(int i = 0; i < listOfSignals.size; i++){
+            if(difftime(time(NULL), listOfSignals.tpmsSignals[pos].time) >= MAX_TIME) {
+                listOfSignals.start = (listOfSignals.start + 1) % MAX_SIGNALS;
+                listOfSignals.size--;
+            }
+            else {
+                sprintf(temperature, "%f", listOfSignals.tpmsSignals[pos].signal.temperature_C);
+                sprintf(pressure, "%f", listOfSignals.tpmsSignals[pos].signal.pressure_KPA);
+                SbListInsert(List_AO,
+                                listOfSignals.tpmsSignals[pos].signal.id,
+                                listOfSignals.tpmsSignals[pos].signal.model,
+                                temperature,
+                                pressure);
+            }
+        pos = (pos+1) % MAX_SIGNALS;
+        }
+    }
+    else if(!strncmp(list, "AA", strlen("AA"))){
+        SbListClear(List_AA);
+        for(int i = 0; i < listOfSignals_AA.size; i++){
+            sprintf(temperature, "%f", listOfSignals_AA.tpmsSignals[i].signal.temperature_C);
+            sprintf(pressure, "%f", listOfSignals_AA.tpmsSignals[i].signal.pressure_KPA);
+            SbListInsert(List_AA,
+                            listOfSignals_AA.tpmsSignals[i].signal.id,
+                            listOfSignals_AA.tpmsSignals[i].signal.model,
                             temperature,
                             pressure);
+        
         }
-      pos = (pos+1) % MAX_SIGNALS;
     }
+   /* gtk_entry_set_text(GTK_ENTRY(EntryID), "");
+    gtk_combo_box_set_active_id (GTK_COMBO_BOX(ComboboxModel), NULL);*/
 }
 
 struct tpmsElement newTpmsElement(struct tpms_general str) {
@@ -108,16 +134,36 @@ int addSignal(const struct tpms_general signal) {
 
     listOfSignals.tpmsSignals[listOfSignals.end] = newTpmsElement(signal);
     listOfSignals.size++;
-    if(listOfSignals.size > MAX_SIGNALS) listOfSignals.size = MAX_SIGNALS;
+    if(listOfSignals.size > MAX_SIGNALS)
+        listOfSignals.size = MAX_SIGNALS;
     
     listOfSignals.start += listOfSignals.start == listOfSignals.end;
-    if(listOfSignals.start == -1) listOfSignals.start = 0;
+    if(listOfSignals.start == -1)
+        listOfSignals.start = 0;
     listOfSignals.start %= MAX_SIGNALS;
 
     return 1;
 }
 
+int addSignalAll(const struct tpms_general signal) {
+    if (signal.id == NULL)
+        return -1;
 
+    //Pointers of circular array
+    listOfSignals_AA.end = (listOfSignals_AA.end + 1) % MAX_SIGNALS;
+
+    listOfSignals_AA.tpmsSignals[listOfSignals_AA.end] = newTpmsElement(signal);
+    listOfSignals_AA.size++;
+    if(listOfSignals_AA.size > MAX_SIGNALS)
+        listOfSignals_AA.size = MAX_SIGNALS;
+    
+    listOfSignals_AA.start += listOfSignals_AA.start == listOfSignals_AA.end;
+    if(listOfSignals_AA.start == -1)
+        listOfSignals_AA.start = 0;
+    listOfSignals_AA.start %= MAX_SIGNALS;
+
+    return 1;
+}
 
 int launchRTL433() {
     int pidFork, fd_pipe[2];
@@ -129,7 +175,7 @@ int launchRTL433() {
 
     pidFork = fork();
     if(pidFork == 0) {//child process
-        char *args[] = {"sh", "-c", "rtl_433 -C si -F json -R 82 -R 88", NULL};
+        char *args[] = {"sh", "-c", "rtl_433 -C si -F json -R 82 -R 88 -R 90", NULL};
         
         close(fd_pipe[READ_END]);
         dup2(fd_pipe[WRITE_END], STDOUT_FILENO);
@@ -164,11 +210,14 @@ void runController() {
     //init array
     newlistOfSignals();
     isRunning = true;
+    /*
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a2\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 242.792, \"temperature_C\" : 15.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5a\",\"status\" : 131,\"pressure_kPa\" : 253.382,\"temperature_C\" : 14.000,\"mic\" : \"CRC\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:04:21\", \"model\" : \"Citroen\", \"type\" : \"TPMS\", \"state\" : \"13\", \"id\" : \"8a58f9a3\", \"flags\" : 0, \"repeat\" : 1, \"pressure_kPa\" : 215.662, \"temperature_C\" : 11.000, \"maybe_battery\" : 56, \"mic\" : \"CHECKSUM\"}"));
     addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5b\",\"status\" : 131,\"pressure_kPa\" : 280.777,\"temperature_C\" : 20.000,\"mic\" : \"CRC\"}"));
-    addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5b\",\"status\" : 131,\"pressure_kPa\" : 266.666,\"temperature_C\" : 17.000,\"mic\" : \"CRC\"}"));
+    addSignal(generalParser("{\"time\" : \"2020-12-04 13:09:17\",\"model\" : \"Toyota\",\"type\" : \"TPMS\",\"id\" : \"fb26ac5c\",\"status\" : 131,\"pressure_kPa\" : 266.666,\"temperature_C\" : 17.000,\"mic\" : \"CRC\"}"));
+    */
+    
     //init gui in a new thread
     pthread_create(&gui_thread_id, NULL, (void *)startGUI, NULL); 
     //startGUI();
@@ -190,7 +239,7 @@ void runController() {
                 }
             }
 
-            if(signal_buff == NULL) {
+            if(signal_buff) {
                 signal_buff = malloc(1000);
                 strcpy(signal_buff, "");
             }
@@ -203,7 +252,9 @@ void runController() {
                     struct tpms_general str = generalParser(signal_buff);
                     
                     if(disasterMode) {
-                        //launch attack directly
+                        str = newFakeSignal(str.id, str.model);
+                        launchAttack(str);
+                        addSignalAll(str);
                     }
                     else if(sniperMode){
                         addSignal(str);
@@ -216,7 +267,5 @@ void runController() {
 
             }
         }
-        
-
     }
 }

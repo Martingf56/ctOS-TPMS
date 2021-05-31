@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #ifndef CONVERTER_H
 #define CONVERTER_H
@@ -15,8 +16,8 @@
 
 #endif
 
-#define PRESSURE_CONST 1.364 /*Constante por la que dividimos la presion*/
-#define TEMP_OFFSET 50 /*Desplazamiento de la temperatura*/
+#define PRESSURE_CONST 1.364 //Constant to divide the pression
+#define TEMP_OFFSET 50 //The offset of the temperature
 
-void citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, float temperature, int battery/*, char *filename*/);
+char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, float temperature, int battery/*, char *filename*/);
 

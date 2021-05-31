@@ -2,47 +2,47 @@
 #include "includes/encoders.h"
 
 char* manchester_encoder(char* frame){
-    char* manchester_frame = (char*)malloc(strlen(frame) * 2);
-    strcpy(manchester_frame, ""); /*inicializamos a vacio*/
+    char* manchester_frame = (char*)malloc((strlen(frame) * 2)+1);
+    strcpy(manchester_frame, ""); /*initialize to empty*/
     int i;
-    for(i = 0; i < strlen(frame); i++){/*Segun IEEE 802.3*/
+    for(i = 0; i < strlen(frame); i++){/*According to G.E. Thomas convention*/
         if(frame[i] == '0'){
-            strcat(manchester_frame, "10");/*Transicion alto-bajo en mitad del intervalo*/
+            strcat(manchester_frame, "01");/*Low-high transition in the middle of the interval*/
         }
         else{
-            strcat(manchester_frame, "01");/*Transicion bajo-alto en mitad del intervalo*/
+            strcat(manchester_frame, "10");/*High-low transition in the middle of the interval*/
         }
     }
     return manchester_frame;
 }
 
 char* differential_manchester_encoder(char* frame){
-    char* differential_manchester_frame = (char*)malloc(strlen(frame) * 2);
-    strcpy(differential_manchester_frame, ""); /*inicializamos a vacio para luego poder concatenarmanch*/
+    char* differential_manchester_frame = (char*)malloc((strlen(frame) * 2)+1);
+    strcpy(differential_manchester_frame, ""); /*initialize to empty to be able to concatenate*/
     int i;
-    char* pattern;
-    if(frame[0] == '0'){
-        strcat(differential_manchester_frame, "01");
-        pattern = "01";
-    }
-    else{
-        strcat(differential_manchester_frame, "10");
-        pattern = "10";
-    }
+    char* lastBit = "1";
 
-    for(i = 1; i < strlen(frame); i++){
-        if(frame[i] == '1'){/*si es 1, hay transición de alto-bajo o bajo-alto solo en mitad del intervalo, al principio no*/
-            if(!strcmp(pattern, "01")){
-                strcat(differential_manchester_frame, "10");
-                pattern = "10";
+    for(i = 0; i < strlen(frame); i++){
+        if(frame[i] == '1'){/*if it's 1, there is one transition only*/
+            if(!strcmp(lastBit, "1")){
+                strcat(differential_manchester_frame, "00");
+                lastBit = "0";
+
             }
             else{
-                strcat(differential_manchester_frame, "01");
-                pattern = "01";
+                strcat(differential_manchester_frame, "11");
+                lastBit = "1";
             }
         }
-        else{/*si es 0, hay transicion en mitad del intervalo y tambien al principio*/
-            strcat(differential_manchester_frame, pattern);
+        else{/*if it's 0, there is transition in the middle of the interval and also at the beginning*/
+            if(!strcmp(lastBit, "1")){
+                strcat(differential_manchester_frame, "01");
+                lastBit = "1";
+            }
+            else{
+                strcat(differential_manchester_frame, "10");
+                lastBit = "0";
+            }
         }
     }
     return differential_manchester_frame;

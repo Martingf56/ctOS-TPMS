@@ -1,17 +1,64 @@
 /*all label*/
 label{
-    color: #343332;
+    color: #021725;
+    /*background-color: purple;*/
 }
 
 /*change some label*/
-label#LblTitle, label#LblTitleAll, label#LblTitleOne{
-    color: #F37A1B;
+label#LabelMainTitle, label#LabelTitle_AA, label#LabelTitle_AO{
+    color: #E45407;
     font-weight: bold;
+    text-decoration: underline;
 }
 
-label#LblImg, label#LblID, label#LblModel{
-    color: #E84706;
+label#LabelMainTitle{
+    font-size: 30px;
+}
+label#LabelTitle_AA, label#LabelTitle_AO{
+    font-size: 25px;
+}
+
+label#LabelImageGif_AA, label#LabelID_AO, label#LabelModel_AO{
+    color: #021725;
+    background-color:#0F9DF3;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #021725;
     font-weight: bold;
 }  
 
+button{
+    border-color: black;
+    background-color: #0F9DF3;
+}
+button#ButtonExit, button#ButtonGo_AO, button#ButtonGo_AA, button#ButtonPlay_AO, button#ButtonPlay_AA, button#ButtonStop_AA{
+    background: #021725;
+    
+}
+button#ButtonMainWindow{
+    background: white;
+    border-radius: 10px;
+}
 
+button#ButtonExit label, button#ButtonGo_AO label, button#ButtonGo_AA label, button#ButtonPlay_AO label, button#ButtonPlay_AA label, button#ButtonStop_AA label{
+    color:white;
+}
+
+button:hover{
+    box-shadow: 0 12px 12px 0 #0F9DF3, 0 17px 25px 0 #0F9DF3;
+}
+
+entry#EntryID_AO {
+    color: white;
+    background-color: rgba(67, 70, 71, 0.9);
+    border: 1px solid #0F9DF3;
+}
+
+#List_AO, #List_AA{
+    background-color: rgba(67, 70, 71, 0.9);
+    color: white;
+}
+
+#List_AO:hover, #List_AA:hover{
+    background-color: #0F9DF3;
+}
