@@ -29,7 +29,6 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     char* systemFlags = dec2bin(flags, 4);
     char* systemRepeat = dec2bin(repeat, 4);
     char* systemPressure = dec2bin((int)round(pressure/PRESSURE_CONST), 8);
-    //printf("%i", (int)(pressure/PRESSURE_CONST));
     char* systemTemperature = dec2bin((int)(temperature + TEMP_OFFSET), 8);
     char* systemBattery = dec2bin(battery, 8);
     
@@ -42,7 +41,6 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     strcat(frame, systemPressure);
     strcat(frame, systemTemperature);
     strcat(frame, systemBattery);
-    
 
     /*Conversion de caracter a digito*/
     
@@ -69,12 +67,9 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     strcpy(full_frame, frame);
     
     strcat(full_frame, checksum);
-    //printf("%s %s\n", "Trama", full_frame);
 
     /*Codificacion de la señal en manchester*/
     char* manchester_frame = manchester_encoder(full_frame);
-    //printf("%s\n%s\n", "Trama Manchester", manchester_frame);
-    //printf("%s\n%ld\n", "Tamaño total",strlen(manchester_frame));
     
     /*Construccion de la trama codificada. El preambulo y el fin de la trama no se codifican*/
     char* finalCodifiedFrame = (char*)malloc(200+1);
@@ -83,8 +78,8 @@ char* citroenTPMS(char* state, char *id, int flags, int repeat, float pressure, 
     strcat(finalCodifiedFrame, finaltrail);
     finalCodifiedFrame[200]='\0';
     /*Escritura o devolucion de la señal*/
-    printf("%s\n%s\n", "Trama final Citroen",finalCodifiedFrame);
-    printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));    
+    /*printf("%s\n%s\n", "Trama final Citroen",finalCodifiedFrame);
+    printf("%s\n%ld\n", "Tamaño total",strlen(finalCodifiedFrame));*/
 
     return finalCodifiedFrame;
 }
