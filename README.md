@@ -46,11 +46,11 @@ Para más información puedes visitar el repositorio o la página del proyecto e
 #### ctOS
 Para compilar el programa haciendo uso del [MAKEFILE](/makefile).
     
-    $ sudo make all 
+    $ make all 
     
 Para eliminarlo.
 
-    $ sudo make clean
+    $ make clean
 
 ## Como ejecutarlo y usar la herramienta
 En esta sección se explicará como ejecutar la herramienta. Despues de realizar todos los pasos de instalación el ejecutable debería estar listo para su ejecución. Importante utilizar siempre la última versión del código.
